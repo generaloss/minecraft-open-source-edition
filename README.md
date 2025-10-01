@@ -2,7 +2,7 @@
 
 ![Optional Text](preview.png)
 
-### Written on [Jpize engine](https://github.com/GeneralPashon/jpize-engine)
+### Written with [jpize](https://github.com/generaloss/jpize-core)
 
 OS supported: **Windows**, **Linux**
 
@@ -13,4 +13,4 @@ OS supported: **Windows**, **Linux**
 
 * * *
 ## Bugs and Feedback
-For bugs, questions and discussions please use the [GitHub Issues](https://github.com/GeneralPashon/minecraft-open-source-edition/issues).
+For bugs, questions and discussions please use the [GitHub Issues](https://github.com/generaloss/minecraft-open-source-edition/issues).
