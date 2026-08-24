@@ -1,8 +1,8 @@
 package minecraftose.client.chunk.mesh;
 
-import jpize.util.Disposable;
+import generaloss.resourceflow.Disposable;
 
-public class ChunkMeshStack implements Disposable {
+public class ChunkMeshStack implements Disposable{
     
     private final ChunkMesh[] meshes;
 

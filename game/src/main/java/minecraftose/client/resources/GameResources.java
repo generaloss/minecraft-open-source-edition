@@ -1,35 +1,34 @@
 package minecraftose.client.resources;
 
-
 import jpize.audio.al.buffer.AlBuffer;
 import jpize.audio.util.AlMusic;
-import jpize.gl.texture.Texture2D;
-import jpize.util.Disposable;
+import jpize.opengl.texture.Texture2D;
+import generaloss.resourceflow.Disposable;
 import jpize.util.atlas.TextureAtlas;
 import jpize.util.pixmap.PixmapIO;
 import jpize.util.pixmap.PixmapRGBA;
-import jpize.util.region.Region;
-import jpize.util.res.Resource;
+import jpize.util.region.TextureRegion;
+import generaloss.resourceflow.resource.Resource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GameResources implements Disposable {
+public class GameResources implements Disposable{
 
     private final TextureAtlas<String> blockAtlas;
     private final List<Resource> blocksToLoadList;
 
     private final Map<Integer, AlBuffer> soundList;
+    private final Map<String, AlMusic> musicList;
 
     public GameResources(){
         this.blockAtlas = new TextureAtlas<>();
-        this.blockAtlas.enablePaddingFilling(true);
-        this.blockAtlas.setPadding(0);
         this.blocksToLoadList = new ArrayList<>();
 
         this.soundList = new HashMap<>();
+        this.musicList = new HashMap<>();
     }
 
 
@@ -54,7 +53,7 @@ public class GameResources implements Disposable {
         registerBlockRegion(Resource.internal("/" + path + name + ".png"));
     }
 
-    public Region getBlockRegion(String name){
+    public TextureRegion getBlockRegion(String name){
         return blockAtlas.getRegion(name);
     }
 
@@ -64,8 +63,7 @@ public class GameResources implements Disposable {
 
 
     public void registerSound(int ID, Resource resource){
-        final AlBuffer buffer = new AlBuffer();
-        buffer.load(resource);
+        final AlBuffer buffer = new AlBuffer().load(resource);
         soundList.put(ID, buffer);
     }
 
@@ -78,12 +76,13 @@ public class GameResources implements Disposable {
     }
 
 
-    public void registerMusic(String ID, String path){
-
+    public void registerMusic(String path, String ID){
+        final AlMusic buffer = new AlMusic(path + ID + ".ogg");
+        musicList.put(ID, buffer);
     }
 
     public AlMusic getMusic(String musicID){
-        return null;
+        return musicList.get(musicID);
     }
 
 
@@ -94,6 +93,9 @@ public class GameResources implements Disposable {
 
         for(AlBuffer audio: soundList.values())
             audio.dispose();
+
+        for(AlMusic alMusic: musicList.values())
+            alMusic.dispose();
     }
 
 }

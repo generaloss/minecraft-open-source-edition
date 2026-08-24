@@ -1,6 +1,6 @@
 package minecraftose.client.chunk;
 
-import jpize.util.math.matrix.Matrix4f;
+import generaloss.spatialmath.matrix.Matrix4f;
 import minecraftose.client.block.ClientBlock;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.client.chunk.mesh.ChunkMeshStack;
@@ -19,7 +19,7 @@ public class ChunkC extends ChunkBase{
     private final Matrix4f translationMatrix;
     private int maxY;
 
-    public ChunkC(LevelC level, ChunkPos position){
+    public ChunkC(LevelC level, ChunkPos position) {
         super(level, position);
         meshStack = new ChunkMeshStack();
         translationMatrix = new Matrix4f();

@@ -1,6 +1,6 @@
 package minecraftose.client.level;
 
-import jpize.util.math.Maths;
+import generaloss.spatialmath.Maths;
 import minecraftose.client.Minecraft;
 import minecraftose.client.block.ClientBlock;
 import minecraftose.client.block.ClientBlocks;

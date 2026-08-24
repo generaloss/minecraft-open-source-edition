@@ -1,8 +1,8 @@
 package minecraftose.client.entity.model;
 
-import jpize.gl.shader.Shader;
-import jpize.util.math.EulerAngles;
-import jpize.util.math.vector.Vec3f;
+import jpize.opengl.shader.Shader;
+import generaloss.spatialmath.EulerAngles;
+import generaloss.spatialmath.vector.Vec3f;
 import jpize.util.mesh.IndexedMesh;
 import minecraftose.client.control.camera.PlayerCamera;
 

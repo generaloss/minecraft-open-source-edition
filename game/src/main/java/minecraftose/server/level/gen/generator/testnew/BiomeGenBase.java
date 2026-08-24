@@ -2,7 +2,7 @@ package minecraftose.server.level.gen.generator.testnew;
 
 import minecraftose.client.block.ClientBlocks;
 
-import java.awt.*;
+import java.awt.Color;
 
 public class BiomeGenBase{
 

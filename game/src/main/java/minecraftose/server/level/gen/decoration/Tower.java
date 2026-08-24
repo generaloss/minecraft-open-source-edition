@@ -1,17 +1,17 @@
 package minecraftose.server.level.gen.decoration;
 
-import jpize.util.math.ExtRandom;
+import generaloss.spatialmath.ExtRandom;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.level.structure.Structure;
-import minecraftose.server.level.LevelS;
 import minecraftose.server.level.chunk.ChunkS;
+import minecraftose.server.level.LevelS;
 
 public class Tower{
 
     public static void generate(LevelS level, int x, int y, int z, ExtRandom random){
         final int offsetY = -8;
         final int radius = 12;
-        final int floors = random.nextInt(6, 12);
+        final int floors = random.nextInt(12 - 6) + 6;
         final int floorHeight = 4;
         final int peakY = floors * (floorHeight + 1);
 

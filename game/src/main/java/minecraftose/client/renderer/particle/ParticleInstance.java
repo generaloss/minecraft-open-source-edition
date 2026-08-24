@@ -1,9 +1,8 @@
 package minecraftose.client.renderer.particle;
 
-
 import jpize.util.color.Color;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec3f;
 import jpize.util.region.Region;
 
 public class ParticleInstance{

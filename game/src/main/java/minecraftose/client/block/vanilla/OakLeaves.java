@@ -1,6 +1,6 @@
 package minecraftose.client.block.vanilla;
 
-import jpize.util.color.ImmutableColor;
+import jpize.util.color.Color;
 import minecraftose.client.block.ClientBlock;
 import minecraftose.client.block.model.BlockModel;
 import minecraftose.client.block.shape.BlockCollide;
@@ -13,7 +13,7 @@ import minecraftose.main.chunk.ChunkUtils;
 
 public class OakLeaves extends ClientBlock{
 
-    public static final ImmutableColor COLOR = new ImmutableColor(0.35, 0.75, 0.3);
+    public static final Color COLOR = new Color(0.35, 0.75, 0.3);
 
     public OakLeaves(int id){
         super(id);

@@ -1,7 +1,7 @@
 package minecraftose.main;
 
-import jpize.util.math.vector.Vec2i;
-import jpize.util.math.vector.Vec3i;
+import generaloss.spatialmath.vector.Vec2i;
+import generaloss.spatialmath.vector.Vec3i;
 
 public enum Dir{
     

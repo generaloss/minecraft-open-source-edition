@@ -1,15 +1,14 @@
 package minecraftose.client.options;
 
-import jpize.app.Jpize;
-import jpize.glfw.Glfw;
-import jpize.glfw.input.Key;
-import jpize.util.io.FastReader;
-import jpize.util.res.FileResource;
-import jpize.util.res.Resource;
+import generaloss.resourceflow.resource.FileResource;
+import generaloss.resourceflow.stream.FastReader;
+import jpize.context.Jpize;
+import jpize.context.input.Key;
+import generaloss.resourceflow.resource.Resource;
+import jpize.lwjgl.glfw.Glfw;
 import minecraftose.client.Minecraft;
 import minecraftose.client.control.camera.PlayerCamera;
 import minecraftose.main.SharedConstants;
-
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +56,7 @@ public class Options{
     
 
     public void load(){
-        try(FastReader reader = fileResource.reader()){
+        try(final FastReader reader = fileResource.reader()){
             while(reader.hasNext()){
                 final String[] parts = reader.nextLine().split(" : ");
                 if(parts.length != 2)
@@ -178,7 +177,7 @@ public class Options{
         this.maxFrameRate = maxFrameRate;
         minecraft.getFpsSync().setRate(maxFrameRate);
 
-        minecraft.getFpsSync().enable(maxFrameRate > 0 && maxFrameRate < UNLIMITED_FPS_THRESHOLD);
+        minecraft.getFpsSync().setEnabled(maxFrameRate > 0 && maxFrameRate < UNLIMITED_FPS_THRESHOLD);
         Glfw.enableVSync(maxFrameRate == 0);
     }
 
@@ -189,7 +188,7 @@ public class Options{
 
     public void setFullscreen(boolean fullscreen){
         this.fullscreen = fullscreen;
-        Jpize.window().setFullscreen(fullscreen);
+        Jpize.window.setFullscreen(fullscreen);
     }
 
 

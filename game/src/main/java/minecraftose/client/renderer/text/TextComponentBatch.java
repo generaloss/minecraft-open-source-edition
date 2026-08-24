@@ -1,40 +1,38 @@
 package minecraftose.client.renderer.text;
 
-import jpize.app.Jpize;
-import jpize.gl.texture.Texture2D;
-import jpize.util.Disposable;
-import jpize.util.color.AbstractColor;
+import jpize.context.Jpize;
 import jpize.util.color.Color;
 import jpize.util.font.Font;
-import jpize.util.font.Glyph;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec2f;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec2f;
+import jpize.util.font.GlyphIterator;
+import jpize.util.font.GlyphSprite;
 import jpize.util.mesh.TextureBatch;
-import jpize.util.res.Resource;
+import jpize.util.region.TextureRegion;
 import minecraftose.main.text.Component;
 import minecraftose.main.text.ComponentText;
 import minecraftose.main.text.TextStyle;
+import generaloss.resourceflow.Disposable;
 
 import java.util.List;
 
-public class TextComponentBatch implements Disposable {
+public class TextComponentBatch implements Disposable{
     
     private final TextureBatch batch;
     private final Font font;
     private final Color background;
     
-    public TextComponentBatch(){
+    public TextComponentBatch() {
         this.batch = new TextureBatch();
         this.background = new Color();
 
-        this.font = new Font().loadFNT(Resource.internal("/font/minecraft/default.fnt"), false);
-        // this.font = FontLoader.loadTrueType("font/faithful/faithful.ttf", 32);
-        this.font.getRenderOptions().setLineGap(1F);
+        this.font = new Font().loadFNT("/font/minecraft/default.fnt", false);
+        //this.font = new Font().loadTrueType("/font/faithful/faithful.ttf", 64, false);
+        this.font.getOptions().newLineGap = 1;
     }
-    
-    
-    public void updateScale(){
-        font.getRenderOptions().scale().set(Maths.round(Jpize.getHeight() / 330F));
+
+    public void updateScale() {
+        font.getOptions().scale().set(Maths.round(Jpize.getHeight() / 330F));
     }
     
     
@@ -42,14 +40,9 @@ public class TextComponentBatch implements Disposable {
         // Подготовим batch и font
         batch.setup();
 
-        final Vec2f scale = font.getRenderOptions().scale();
-        
+        final Vec2f scale = font.getOptions().scale();
+
         // Позиция следующего символа
-        final float lineAdvance = font.getLineAdvance();
-        
-        float advanceX = 0;
-        float advanceY = 0;
-        
         // Фон
         if(background.alpha != 0){
             final StringBuilder text = new StringBuilder();
@@ -59,58 +52,39 @@ public class TextComponentBatch implements Disposable {
             final Vec2f bounds = font.getTextBounds(text.toString());
             batch.drawRect(x, y, bounds.x, bounds.y,  background);
         }
-        
+
+        float cursorX = 0;
+        float cursorY = 0;
+
         // Пройдемся по каждому компоненту дерева, разложенному в плоский список
         for(ComponentText component: components){
-            
             // Стиль компонента
             final TextStyle style = component.getStyle();
-            batch.shear(style.isItalic() ? 15 : 0, 0);
+            batch.shear(style.isItalic() ? 15F : 0F, 0F);
             
             // Цвет компонента
             final Color color = component.getColor().copy();
-            color.setAlpha(color.alpha * alpha);
+            color.setAlpha(alpha);
             
             // Текст
             final String text = component.getText();
-            
+            final Iterable<GlyphSprite> iterable = font.iterable(text);
+
             // Рендерим каждый символ
-            for(int i = 0; i < text.length(); i++){
-                final int code = text.charAt(i);
-                
-                // Перенос на новую строку соответствующим символом
-                if(code == 10){
-                    advanceX = 0;
-                    advanceY -= lineAdvance;
-                    continue;
-                }
-                
-                // Глиф
-                final Glyph glyph = font.glyphs().get(code);
-                if(glyph == null)
-                    continue;
-                
-                // Перенос на новую строку если текст не вмещается в заданную ширину
-                if(width > 0 && (advanceX + glyph.advanceX) * scale.x >= width){
-                    advanceX = 0;
-                    advanceY -= lineAdvance;
-                }
-                
-                // Координаты глифа
-                final float glyphX = x + (advanceX + glyph.offset.x) * scale.x;
-                final float glyphY = y + (advanceY + glyph.offset.y) * scale.y;
-                
+            for(GlyphSprite glyph: iterable){
+                final float renderX = (glyph.getX() + x + cursorX);
+                final float renderY = (glyph.getY() + y + cursorY);
+                final TextureRegion region = new TextureRegion(glyph.getPage(), glyph.getRegion());
                 // Рендерим тень
-                batch.setColor(color.copy().mulRGB(0.25));
-                final Texture2D page = font.pages().get(glyph.pageID);
-                batch.draw(page, glyph.region, glyphX + scale.x, glyphY - scale.y, glyph.size.x * scale.x, glyph.size.y * scale.y);
-
+                batch.draw(region, renderX + scale.x, renderY - scale.y, glyph.getWidth(), glyph.getHeight(), color.copy().mulRGB(0.1));
                 // Рендерим основной символ
-                batch.setColor(color);
-                batch.draw(page, glyph.region, glyphX, glyphY, glyph.size.x * scale.x, glyph.size.y * scale.y);
-
-                advanceX += glyph.advanceX;
+                batch.draw(region, renderX, renderY, glyph.getWidth(), glyph.getHeight(), color);
             }
+
+            // Прибавляем позицию для следующей части текста
+            final GlyphIterator iterator = (GlyphIterator) iterable.iterator();
+            cursorX += iterator.nextCursorX() * scale.x;
+            cursorY += iterator.nextCursorY() * scale.y;
         }
         
         // Закончим отрисовку
@@ -159,7 +133,7 @@ public class TextComponentBatch implements Disposable {
         background.set(r, g, b);
     }
     
-    public void setBackgroundColor(AbstractColor color){
+    public void setBackgroundColor(Color color){
         background.set(color);
     }
     

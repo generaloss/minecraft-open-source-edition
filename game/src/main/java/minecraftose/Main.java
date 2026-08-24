@@ -1,7 +1,9 @@
 package minecraftose;
 
-import jpize.app.Jpize;
-import jpize.util.math.Maths;
+import jpize.audio.AlDevices;
+import generaloss.spatialmath.Maths;
+import jpize.lwjgl.glfw.context.GlfwContextBuilder;
+import jpize.lwjgl.glfw.context.GlfwContextManager;
 import minecraftose.client.Minecraft;
 import minecraftose.main.network.PlayerProfile;
 
@@ -25,14 +27,19 @@ public class Main{
         final int width = Integer.parseInt(argsMap.getOrDefault("width", "1280"));
         final int height = Integer.parseInt(argsMap.getOrDefault("height", "720"));
 
-        // Run app
-        Jpize.create(width, height, "Minecraft Open Source Edition")
+        AlDevices.openDevice();
+
+        // run app
+        GlfwContextBuilder.create(width, height, "Minecraft Open Source Edition")
+            //.samples(4)
             .build()
             .setApp(Minecraft.INSTANCE);
-            //.setAdapter(new LerpTest());
-            //.setAdapter(new BiomeGenerator());
+            //.setApp(new LerpTest());
+            //.setApp(new BiomeGenerator());
 
-        Jpize.run();
+        GlfwContextManager.run();
+
+        AlDevices.dispose();
     }
 
     private static Map<String, String> mapArgs(String[] args){

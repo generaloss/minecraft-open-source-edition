@@ -1,11 +1,11 @@
 package minecraftose.client.entity.model;
 
-import jpize.gl.shader.Shader;
-import jpize.gl.texture.Texture2D;
-import jpize.util.res.Resource;
+import jpize.opengl.shader.Shader;
+import jpize.opengl.texture.Texture2D;
+import generaloss.resourceflow.resource.Resource;
 import minecraftose.client.control.camera.PlayerCamera;
-import minecraftose.client.entity.AbstractClientPlayer;
 import minecraftose.main.entity.Player;
+import minecraftose.client.entity.AbstractClientPlayer;
 
 public class HumanoidModel{
     

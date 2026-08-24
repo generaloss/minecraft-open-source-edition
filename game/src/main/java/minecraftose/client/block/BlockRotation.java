@@ -1,8 +1,7 @@
 package minecraftose.client.block;
 
-
-import jpize.util.math.matrix.Matrix4f;
-import jpize.util.math.vector.Vec3i;
+import generaloss.spatialmath.matrix.Matrix4f;
+import generaloss.spatialmath.vector.Vec3i;
 
 public enum BlockRotation{
 

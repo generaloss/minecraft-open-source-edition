@@ -1,6 +1,6 @@
 package minecraftose.server.level.gen.decoration.old;
 
-import jpize.util.math.Maths;
+import generaloss.spatialmath.Maths;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.server.level.LevelS;
 

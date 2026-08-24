@@ -7,7 +7,7 @@ graphics.showFps : true
 graphics.brightness : 1.0
 graphics.fog : true
 graphics.firstPersonModel : false
-control.mouseSensitivity : 0.15
+control.mouseSensitivity : 0.2
 key.forward : w
 key.left : a
 key.back : s

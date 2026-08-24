@@ -5,7 +5,7 @@ import minecraftose.main.chunk.ChunkBase;
 
 import java.util.Arrays;
 
-import static minecraftose.main.chunk.ChunkUtils.getIndex;
+import static minecraftose.main.chunk.ChunkUtils.*;
 
 public class BiomeMap{
 

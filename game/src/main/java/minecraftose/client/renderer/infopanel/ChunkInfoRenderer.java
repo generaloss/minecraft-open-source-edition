@@ -1,8 +1,8 @@
 package minecraftose.client.renderer.infopanel;
 
-import jpize.util.Disposable;
-import jpize.util.camera.OrthographicCameraCentered;
 import jpize.util.mesh.TextureBatch;
+import generaloss.resourceflow.Disposable;
+import jpize.util.camera.OrthographicCameraCentered;
 import minecraftose.client.control.camera.PlayerCamera;
 import minecraftose.client.renderer.GameRenderer;
 import minecraftose.server.IntegratedServer;
@@ -10,7 +10,7 @@ import minecraftose.server.level.LevelS;
 
 import java.util.Collection;
 
-public class ChunkInfoRenderer implements Disposable {
+public class ChunkInfoRenderer implements Disposable{
 
     private final GameRenderer gameRenderer;
     private final TextureBatch batch;
@@ -44,7 +44,7 @@ public class ChunkInfoRenderer implements Disposable {
 
         camera.update();
         camera.position().set(playerCamera.position().xz().mul(1 / 16F * size));
-        camera.setRotation(-playerCamera.rotation().getYaw() + 90);
+        camera.setRotation(-playerCamera.rotation().yaw + 90);
 
         batch.setAlpha(0.3);
         batch.setup(camera);

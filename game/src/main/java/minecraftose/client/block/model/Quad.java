@@ -1,7 +1,6 @@
 package minecraftose.client.block.model;
 
-
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
 
 public class Quad{
 

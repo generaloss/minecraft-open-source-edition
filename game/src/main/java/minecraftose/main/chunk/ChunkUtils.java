@@ -1,8 +1,8 @@
 package minecraftose.main.chunk;
 
-import minecraftose.client.chunk.ChunkC;
 import minecraftose.main.chunk.storage.ChunkPos;
 import minecraftose.server.level.chunk.ChunkS;
+import minecraftose.client.chunk.ChunkC;
 
 public class ChunkUtils{
 

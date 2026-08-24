@@ -1,6 +1,5 @@
 package jpize.tests.mcose.launcher;
 
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +10,7 @@ public class Main{
     private static final String title = "MCOSE Launcher";
 
     public static void main(String[] args){
+        // runJPize();
         // runCli();
         runJFrame();
     }

@@ -1,5 +1,7 @@
 package minecraftose.main.network.packet.s2c.game;
 
+import generaloss.networkforge.packet.VisitorNetPacket;
+import jpize.util.color.Color;
 import minecraftose.client.network.ClientPacketHandler;
 import minecraftose.main.chat.source.MessageSource;
 import minecraftose.main.chat.source.MessageSourcePlayer;
@@ -7,18 +9,17 @@ import minecraftose.main.chat.source.MessageSourceServer;
 import minecraftose.main.chat.source.MessageSources;
 import minecraftose.main.text.ComponentText;
 import minecraftose.main.text.TextStyle;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class S2CPacketChatMessage extends NetPacket<ClientPacketHandler>{
+public class S2CPacketChatMessage extends VisitorNetPacket<ClientPacketHandler> {
     
-        
-    public S2CPacketChatMessage(){}
+       
+    public S2CPacketChatMessage(){ }
     
     
     public MessageSource source;
@@ -42,7 +43,7 @@ public class S2CPacketChatMessage extends NetPacket<ClientPacketHandler>{
     
     
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         // Write source
         stream.writeByte(source.getSource().ordinal());
         if(source.getSource() == MessageSources.PLAYER)
@@ -54,14 +55,14 @@ public class S2CPacketChatMessage extends NetPacket<ClientPacketHandler>{
             writeComponent(stream, component);
     }
     
-    private void writeComponent(ExtDataOutputStream stream, ComponentText component) throws IOException{
+    private void writeComponent(BinaryOutputStream stream, ComponentText component) throws IOException{
         stream.writeByte(component.getStyle().getData());
-        stream.writeColor(component.getColor());
+        stream.writeFloats(component.getColor().toArray());
         stream.writeUTF(component.getText());
     }
     
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         // Read source
         final MessageSources messageSource = MessageSources.values()[stream.readByte()];
         if(messageSource == MessageSources.PLAYER){
@@ -78,11 +79,11 @@ public class S2CPacketChatMessage extends NetPacket<ClientPacketHandler>{
             readComponent(stream);
     }
     
-    private void readComponent(ExtDataInputStream stream) throws IOException{
+    private void readComponent(BinaryInputStream stream) throws IOException{
         components.add(
             new ComponentText(
                 new TextStyle(stream.readByte()),
-                stream.readColor(),
+                new Color(stream.readFloats(4)),
                 stream.readUTF()
             )
         );

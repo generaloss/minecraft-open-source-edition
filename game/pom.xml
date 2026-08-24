@@ -5,12 +5,10 @@
     <parent>
         <groupId>com.generalpashon</groupId>
         <artifactId>minecraft-open-source-edition</artifactId>
-        <version>1.0.0</version>
+        <version>26.8.1</version>
     </parent>
 
     <groupId>minecraft-open-source-edition</groupId>
     <artifactId>game</artifactId>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
 
 </project>

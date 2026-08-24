@@ -1,4 +1,4 @@
-remote.host : 0.0.0.0:22854
+remote.host : 192.168.193.7:22854
 graphics.fieldOfView : 85.0
 graphics.renderDistance : 14
 graphics.maxFramerate : 0

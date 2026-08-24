@@ -1,38 +1,32 @@
 package minecraftose.main.network.packet.c2s.game.move;
 
-import jpize.util.math.EulerAngles;
-import jpize.util.math.vector.Vec3f;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
+import generaloss.spatialmath.EulerAngles;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.client.entity.LocalPlayer;
 import minecraftose.server.network.ServerPlayerGameConnection;
 
 import java.io.IOException;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class C2SPacketRot extends NetPacket<ServerPlayerGameConnection>{
+public class C2SPacketRot extends VisitorNetPacket<ServerPlayerGameConnection> {
 
-    
-    public C2SPacketRot(){}
+    public C2SPacketRot(){ }
 
-
-    public Vec3f position;
     public EulerAngles rotation;
-    public Vec3f velocity;
 
     public C2SPacketRot(LocalPlayer localPlayer){
         this();
         rotation = localPlayer.getRotation();
     }
 
-
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeEulerAngles(rotation);
     }
 
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         rotation = stream.readEulerAngles();
     }
 

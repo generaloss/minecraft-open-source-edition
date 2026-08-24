@@ -10,14 +10,14 @@ import minecraftose.main.Dir;
 import minecraftose.main.audio.SoundType;
 import minecraftose.main.chunk.ChunkUtils;
 
-public class GrassBlock extends ClientBlock{
+public class GrassBlock extends ClientBlock {
 
     public GrassBlock(int id){
         super(id);
     }
 
     @Override
-    public void load(GameResources resources){
+    public void load(GameResources resources) {
         final BlockModel model = new BlockModel(ChunkMeshType.SOLID)
                 .sideXZFaces(resources.getBlockRegion("grass_block_side"))
                 .sideXZFaces(resources.getBlockRegion("grass_block_side_overlay"), (byte) 1)

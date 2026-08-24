@@ -1,18 +1,17 @@
 package minecraftose.client.control;
 
-import jpize.glfw.input.Key;
+import jpize.context.input.Key;
 import jpize.util.input.RotationInput;
-import jpize.util.math.EulerAngles;
-import jpize.util.time.Stopwatch;
 import minecraftose.client.Minecraft;
-import minecraftose.client.control.camera.HorizontalMoveController;
 import minecraftose.client.control.camera.PlayerCamera;
+import minecraftose.client.control.camera.HorizontalMoveController;
 import minecraftose.client.entity.LocalPlayer;
 import minecraftose.client.level.LevelC;
 import minecraftose.client.options.KeyMapping;
 import minecraftose.client.options.Options;
 import minecraftose.main.Tickable;
 import minecraftose.main.network.packet.c2s.game.C2SPacketPlayerSneaking;
+import generaloss.chronokit.Stopwatch;
 
 public class PlayerInput implements Tickable{
 
@@ -25,12 +24,12 @@ public class PlayerInput implements Tickable{
     public PlayerInput(LocalPlayer player){
         this.player = player;
 
-        this.rotation = new RotationInput(new EulerAngles());
+        this.rotation = new RotationInput(player.getRotation());
         // this.rotation.setSmoothness(0);
         this.rotation.setSpeed(player.getMinecraft().getOptions().getMouseSensitivity());
 
         this.horizontalMove = new HorizontalMoveController(this);
-        this.prevJumpTime = new Stopwatch();
+        this.prevJumpTime = new Stopwatch().start();
     }
     
     public LocalPlayer getPlayer(){
@@ -50,7 +49,7 @@ public class PlayerInput implements Tickable{
         final Options options = minecraft.getOptions();
 
         // Rotation
-        player.getRotation().set(rotation.getTarget());
+        player.getMinecraft().getCamera().rotation().set(rotation.getTarget());
 
         // Horizontal motion
         horizontalMove.update();
@@ -85,10 +84,11 @@ public class PlayerInput implements Tickable{
             if(player.isFlyEnabled()){
                 if(prevJumpTime.getMillis() < 350)
                     player.setFlying(!player.isFlying());
-                prevJumpTime.stop().reset().start();
+                prevJumpTime.reset();
             }
-        }else if(options.getKey(KeyMapping.JUMP).up())
+        }else if(options.getKey(KeyMapping.JUMP).up()) {
             player.setJumping(false);
+        }
 
         // Toggle perspective
         final PlayerCamera camera = minecraft.getCamera();
@@ -100,7 +100,7 @@ public class PlayerInput implements Tickable{
         if(Key.Y.down())
             player.getVelocity().mul(2, 1.4, 2);
         if(Key.H.down())
-            player.getVelocity().add(camera.getDirection().mul(2));
+            player.getVelocity().add(camera.getDirection().copy().mul(2));
     }
 
     public void tick(){ }

@@ -1,6 +1,5 @@
 package jpize.tests.mcose.launcher;
 
-
 import jpize.tests.mcose.launcher.swing.JHintTextField;
 import jpize.tests.mcose.launcher.swing.JPanelWithBackground;
 

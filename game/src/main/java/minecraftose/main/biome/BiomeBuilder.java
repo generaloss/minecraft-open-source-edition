@@ -9,8 +9,8 @@ public class BiomeBuilder{
 
     private final byte ID;
     private final String name;
-    private Color grassColor = new Color(0.44F, 0.67F, 0.28F, 1F);
-    private Color waterColor = new Color(0F, 0.2F, 0.9F, 1F);
+    private Color grassColor = new Color(0.44, 0.67, 0.28, 1);
+    private Color waterColor = new Color(0, 0.2, 0.9, 1);
     private ClientBlock topBlock = ClientBlocks.GRASS_BLOCK;
     private ClientBlock fillerBlock = ClientBlocks.DIRT;
 
@@ -54,7 +54,7 @@ public class BiomeBuilder{
         return this;
     }
 
-    public BiomeBuilder colors(float grassR, float grassG, float grassB, float waterR, float waterG, float waterB){
+    public BiomeBuilder colors(double grassR, double grassG, double grassB, double waterR, double waterG, double waterB){
         this.grassColor = new Color(grassR, grassG, grassB);
         this.waterColor = new Color(waterR, waterG, waterB);
         return this;

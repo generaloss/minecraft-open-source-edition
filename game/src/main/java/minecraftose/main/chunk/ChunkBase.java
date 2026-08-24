@@ -1,12 +1,16 @@
 package minecraftose.main.chunk;
 
-import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlock;
+import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.client.chunk.ChunkC;
 import minecraftose.main.biome.chunk.BiomeMap;
 import minecraftose.main.block.ChunkBlockData;
-import minecraftose.main.chunk.storage.*;
+import minecraftose.main.chunk.storage.ChunkNeighbors;
+import minecraftose.main.chunk.storage.ChunkPos;
+import minecraftose.main.chunk.storage.Heightmap;
+import minecraftose.main.chunk.storage.HeightmapType;
+import minecraftose.main.chunk.storage.SectionPos;
 import minecraftose.main.level.Level;
 import minecraftose.server.level.chunk.ChunkS;
 

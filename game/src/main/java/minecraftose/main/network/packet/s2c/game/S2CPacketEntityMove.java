@@ -1,19 +1,20 @@
 package minecraftose.main.network.packet.s2c.game;
 
-import jpize.util.math.EulerAngles;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.EulerAngles;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.client.network.ClientPacketHandler;
 import minecraftose.server.player.ServerPlayer;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
 import java.util.UUID;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class S2CPacketEntityMove extends NetPacket<ClientPacketHandler>{
+public class S2CPacketEntityMove extends VisitorNetPacket<ClientPacketHandler> {
 
-    public S2CPacketEntityMove(){}
+        public S2CPacketEntityMove(){ }
+
 
     public UUID uuid;
     public Vec3f position;
@@ -30,7 +31,7 @@ public class S2CPacketEntityMove extends NetPacket<ClientPacketHandler>{
 
 
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeUUID(uuid);
         stream.writeVec3f(position);
         stream.writeEulerAngles(rotation);
@@ -38,7 +39,7 @@ public class S2CPacketEntityMove extends NetPacket<ClientPacketHandler>{
     }
 
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         uuid = stream.readUUID();
         position = stream.readVec3f();
         rotation = stream.readEulerAngles();

@@ -1,13 +1,11 @@
 package minecraftose.test;
 
-
-import jpize.app.Jpize;
-import jpize.app.JpizeApplication;
-import jpize.gl.Gl;
-import jpize.gl.texture.Texture2D;
-import jpize.util.math.FastNoise;
-import jpize.util.math.Maths;
+import generaloss.spatialmath.FastNoise;
+import jpize.context.JpizeApplication;
+import jpize.opengl.gl.GL;
+import jpize.opengl.texture.Texture2D;
 import jpize.util.mesh.TextureBatch;
+import generaloss.spatialmath.Maths;
 import jpize.util.pixmap.PixmapRGBA;
 
 public class BiomeGenerator extends JpizeApplication {
@@ -59,16 +57,10 @@ public class BiomeGenerator extends JpizeApplication {
     
     
     public void render(){
-        Gl.clearColorBuffer();
+        GL.clearColorBuffer();
         batch.setup();
         batch.draw(mapTexture, 0, 0, 1280, 1280);
         batch.render();
-    }
-
-
-    public static void main(String[] args) {
-        Jpize.create(1280, 720, "Test").build().setApp(new BiomeGenerator());
-        Jpize.run();
     }
     
 }

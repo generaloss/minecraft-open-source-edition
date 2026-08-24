@@ -1,11 +1,9 @@
 package minecraftose.server.command.vanilla;
 
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.math.vector.Vec3i;
-import jpize.util.res.FileResource;
-import jpize.util.res.Resource;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3i;
+import generaloss.resourceflow.resource.FileResource;
+import generaloss.resourceflow.resource.Resource;
 import minecraftose.main.command.CommandContext;
 import minecraftose.main.command.argument.CommandArg;
 import minecraftose.main.command.builder.Commands;
@@ -16,6 +14,8 @@ import minecraftose.main.text.TextColor;
 import minecraftose.server.command.ServerCommandDispatcher;
 import minecraftose.server.level.LevelS;
 import minecraftose.server.player.PlayerList;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
 
@@ -73,8 +73,8 @@ public class SCommandStructure{
         final Vec3i size = begin.copy().sub(end).abs().add(1);
 
         // File
-        final FileResource file = Resource.file("structures/" + name + ".struct");
-        try(final ExtDataOutputStream outStream = file.outStreamExt()){
+        final FileResource file = Resource.file("./structures/" + name + ".struct");
+        try(final BinaryOutputStream outStream = file.outStreamBin()){
 
             // Write
             outStream.writeVec3i(size);
@@ -103,8 +103,8 @@ public class SCommandStructure{
         final Vec3i start = new Vec3i(position.xFloor(), position.yRound(), position.zFloor());
 
         // File
-        final Resource file = Resource.file("structures/" + name + ".struct");
-        try(final ExtDataInputStream inStream = file.inStreamExt()){
+        final Resource file = Resource.file("./structures/" + name + ".struct");
+        try(final BinaryInputStream inStream = file.inStreamBin()){
 
             // Read
             final Vec3i size = inStream.readVec3i();

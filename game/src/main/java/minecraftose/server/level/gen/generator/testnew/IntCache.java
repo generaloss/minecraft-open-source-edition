@@ -1,15 +1,14 @@
 package minecraftose.server.level.gen.generator.testnew;
 
-import java.util.ArrayList;
-import java.util.List;
+import generaloss.rawlist.IntList;
 
 public class IntCache{
 
     private static int a = 256;
-    private static final List b = new ArrayList();
-    private static final List c = new ArrayList();
-    private static final List d = new ArrayList();
-    private static final List e = new ArrayList();
+    private static final IntList b = new IntList();
+    private static final IntList c = new IntList();
+    private static final IntList d = new IntList();
+    private static final IntList e = new IntList();
 
     public static synchronized int[] getIntCache(int i){
         int[] aint;
@@ -20,7 +19,7 @@ public class IntCache{
                 c.add(aint);
                 return aint;
             }else{
-                aint = (int[]) b.remove(b.size() - 1);
+                aint = new int[] { b.remove(b.size() - 1) };
                 c.add(aint);
                 return aint;
             }
@@ -36,7 +35,7 @@ public class IntCache{
             e.add(aint);
             return aint;
         }else{
-            aint = (int[]) d.remove(d.size() - 1);
+            aint = new int[] { d.remove(d.size() - 1) };
             e.add(aint);
             return aint;
         }

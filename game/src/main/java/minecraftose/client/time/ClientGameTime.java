@@ -1,6 +1,6 @@
 package minecraftose.client.time;
 
-import jpize.util.time.DeltaTimeCounter;
+import generaloss.chronokit.DeltaTimeCounter;
 import minecraftose.main.time.GameTime;
 
 public class ClientGameTime extends GameTime{
@@ -21,7 +21,7 @@ public class ClientGameTime extends GameTime{
 
 
     public float getDeltaTime(){
-        return dtCounter.get();
+        return dtCounter.getTime();
     }
 
     private float getMillisLerpFactor(){
@@ -29,23 +29,23 @@ public class ClientGameTime extends GameTime{
     }
 
     private float getSecondLerpFactor(){
-        return getMillisLerpFactor() / MILLIS_PER_SECOND;
+        return this.getMillisLerpFactor() / MILLIS_PER_SECOND;
     }
 
     public float getTickLerpFactor(){
-        return getMillisLerpFactor() / MILLIS_IN_SECOND / getDeltaTime();
+        return this.getMillisLerpFactor() / MILLIS_IN_SECOND / this.getDeltaTime();
     }
 
     public float getLerpSeconds(){
-        return super.getSeconds() + getSecondLerpFactor();
+        return super.getSeconds() + this.getSecondLerpFactor();
     }
 
     public float getLerpMinutes(){
-        return getLerpSeconds() / SECONDS_IN_MINUTE;
+        return this.getLerpSeconds() / SECONDS_IN_MINUTE;
     }
 
     public float getLerpDays(){
-        return getLerpSeconds() / SECONDS_IN_DAY;
+        return this.getLerpSeconds() / SECONDS_IN_DAY;
     }
 
 }

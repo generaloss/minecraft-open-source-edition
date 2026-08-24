@@ -1,16 +1,15 @@
 package minecraftose.main.network.packet.c2s.game;
 
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.server.network.ServerPlayerGameConnection;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class C2SPacketPlayerBlockSet extends NetPacket<ServerPlayerGameConnection>{
-    
-        
-    public C2SPacketPlayerBlockSet(){}
+public class C2SPacketPlayerBlockSet extends VisitorNetPacket<ServerPlayerGameConnection> {
+
+    public C2SPacketPlayerBlockSet(){ }
     
     public int x, y, z;
     public short blockData;
@@ -26,7 +25,7 @@ public class C2SPacketPlayerBlockSet extends NetPacket<ServerPlayerGameConnectio
     
     
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeInt(x);
         stream.writeInt(y);
         stream.writeInt(z);
@@ -34,7 +33,7 @@ public class C2SPacketPlayerBlockSet extends NetPacket<ServerPlayerGameConnectio
     }
     
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         x = stream.readInt();
         y = stream.readInt();
         z = stream.readInt();

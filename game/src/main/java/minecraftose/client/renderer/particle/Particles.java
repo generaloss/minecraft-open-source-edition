@@ -1,9 +1,8 @@
 package minecraftose.client.renderer.particle;
 
-
-import jpize.app.Jpize;
-import jpize.gl.texture.Texture2D;
-import jpize.util.math.Maths;
+import jpize.context.Jpize;
+import jpize.opengl.texture.Texture2D;
+import generaloss.spatialmath.Maths;
 
 public enum Particles{
     

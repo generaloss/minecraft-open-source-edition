@@ -1,10 +1,10 @@
 package minecraftose.main.command.source;
 
-import jpize.util.math.vector.Vec3f;
-import minecraftose.main.text.Component;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.server.Server;
 import minecraftose.server.level.LevelS;
 import minecraftose.server.player.ServerPlayer;
+import minecraftose.main.text.Component;
 
 public class CommandServerPlayerSource extends CommandServerSource{
     

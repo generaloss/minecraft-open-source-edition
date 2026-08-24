@@ -1,7 +1,7 @@
 package minecraftose.main.nbt.io;
 
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 import minecraftose.main.nbt.tag.NbtTag;
 import minecraftose.main.nbt.tag.NbtTagID;
 import minecraftose.main.nbt.tag.array.NbtByteArray;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class NbtIO{
 
-    public static void writeToStream(ExtDataOutputStream out, NbtTag<?> nbt) throws IOException{
+    public static void writeToStream(BinaryOutputStream out, NbtTag<?> nbt) throws IOException{
         out.writeByte(nbt.getID());
 
         switch(nbt.getID()){
@@ -54,7 +54,7 @@ public class NbtIO{
         }
     }
 
-    public static void tryWriteToStream(ExtDataOutputStream out, NbtTag<?> nbt){
+    public static void tryWriteToStream(BinaryOutputStream out, NbtTag<?> nbt){
         try{
             writeToStream(out, nbt);
         }catch(IOException e){
@@ -63,7 +63,7 @@ public class NbtIO{
     }
 
 
-    public static NbtTag<?> readStream(ExtDataInputStream in) throws IOException{
+    public static NbtTag<?> readStream(BinaryInputStream in) throws IOException{
         final byte ID = in.readByte();
 
         return switch(ID){
@@ -108,7 +108,7 @@ public class NbtIO{
         };
     }
 
-    public static NbtTag<?> tryReadStream(ExtDataInputStream in){
+    public static NbtTag<?> tryReadStream(BinaryInputStream in){
         try{
             return readStream(in);
         }catch(IOException e){

@@ -1,7 +1,7 @@
 package minecraftose.main.command.node;
 
-import minecraftose.main.command.Command;
 import minecraftose.main.command.argument.CommandArg;
+import minecraftose.main.command.Command;
 
 public class CommandNodeArg extends CommandNodeLiteral{
     

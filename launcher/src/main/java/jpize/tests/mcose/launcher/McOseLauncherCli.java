@@ -1,6 +1,6 @@
 package jpize.tests.mcose.launcher;
 
-import jpize.util.io.FastReader;
+import generaloss.resourceflow.stream.FastReader;
 
 public class McOseLauncherCli{
 

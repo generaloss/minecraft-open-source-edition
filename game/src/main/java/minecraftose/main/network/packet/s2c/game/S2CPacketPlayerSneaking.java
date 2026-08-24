@@ -1,18 +1,17 @@
 package minecraftose.main.network.packet.s2c.game;
 
+import generaloss.networkforge.packet.VisitorNetPacket;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 import minecraftose.client.network.ClientPacketHandler;
 import minecraftose.main.entity.Player;
-
 import java.io.IOException;
 import java.util.UUID;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class S2CPacketPlayerSneaking extends NetPacket<ClientPacketHandler>{
+public class S2CPacketPlayerSneaking extends VisitorNetPacket<ClientPacketHandler> {
     
-        
-    public S2CPacketPlayerSneaking(){}
+       
+    public S2CPacketPlayerSneaking(){ }
     
     
     public UUID playerUUID;
@@ -26,13 +25,13 @@ public class S2CPacketPlayerSneaking extends NetPacket<ClientPacketHandler>{
     
     
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeUUID(playerUUID);
         stream.writeBoolean(sneaking);
     }
     
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         playerUUID = stream.readUUID();
         sneaking = stream.readBoolean();
     }

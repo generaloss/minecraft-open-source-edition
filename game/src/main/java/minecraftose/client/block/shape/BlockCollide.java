@@ -1,7 +1,6 @@
 package minecraftose.client.block.shape;
 
-
-import jpize.util.math.axisaligned.AABox;
+import generaloss.spatialmath.axisaligned.AABox;
 
 public class BlockCollide{
 

@@ -1,7 +1,7 @@
 package minecraftose.main.command.builder;
 
-import minecraftose.main.command.Command;
 import minecraftose.main.command.argument.CommandArg;
+import minecraftose.main.command.Command;
 import minecraftose.main.command.node.CommandNodeArg;
 
 public class CommandBuilderArg{

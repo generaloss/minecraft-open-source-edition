@@ -1,6 +1,6 @@
 package minecraftose.client.block.vanilla;
 
-import jpize.util.region.Region;
+import jpize.util.region.TextureRegion;
 import minecraftose.client.block.ClientBlock;
 import minecraftose.client.block.model.BlockModel;
 import minecraftose.client.block.model.Face;
@@ -21,9 +21,9 @@ public class OakPlanksStairs extends ClientBlock{
 
     @Override
     public void load(GameResources resources){
-        final Region region = resources.getBlockRegion("oak_planks");
-        final Region halfRegion = region.copy().extrude(1, 0.5F);
-        final Region quarterRegion = region.copy().extrude(0.5F, 0.5F);
+        final TextureRegion region = resources.getBlockRegion("oak_planks");
+        final TextureRegion halfRegion = region.copy().extrude(1, 0.5F);
+        final TextureRegion quarterRegion = region.copy().extrude(0.5F, 0.5F);
 
         final BlockModel model = new BlockModel(ChunkMeshType.CUSTOM)
             .setFacesTransparentForNeighbors(false, true, true, true, false, true)

@@ -1,9 +1,9 @@
 package minecraftose.client.entity.model;
 
-import jpize.app.Jpize;
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec3f;
+import jpize.context.Jpize;
+import generaloss.spatialmath.Mathc;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.Minecraft;
 import minecraftose.client.control.camera.PlayerCamera;
 import minecraftose.client.entity.AbstractClientPlayer;
@@ -116,7 +116,7 @@ public class PlayerModel extends HumanoidModel{
         final Options options = minecraft.getOptions();
         final PlayerCamera camera = minecraft.getCamera();
         if(options.isFirstPersonModel() && camera.getPerspective().isFirstPerson()){
-            final Vec3f offset = player.getRotation().getDirectionHorizontal().mul(-4 * w);
+            final Vec3f offset = player.getRotation().getDirectionHorizontal(new Vec3f()).mul(-4 * w);
             torso.getPosition().add(offset);
             head.setShow(false);
         }else
@@ -125,26 +125,26 @@ public class PlayerModel extends HumanoidModel{
         if(Float.isNaN(player.getLerpRotation().yaw) || Float.isNaN(torso.getRotation().yaw))
             return;
 
-        torso.getRotation().yaw += (player.getLerpRotation().yaw - torso.getRotation().yaw) * Jpize.getDeltaTime() * 6;
+        torso.getRotation().yaw += (-player.getLerpRotation().yaw - torso.getRotation().yaw) * Jpize.getDeltaTime() * 6;
 
-        head.getRotation().yaw = player.getLerpRotation().yaw;
-        head.getRotation().roll = player.getLerpRotation().pitch;
+        head.getRotation().yaw = -player.getLerpRotation().yaw;
+        head.getRotation().pitch = player.getLerpRotation().pitch;
 
         // Sneaking
         if(player.isSneaking()){
-            leftLeg.getRotation().roll = 45;
-            rightLeg.getRotation().roll = 45;
+            leftLeg.getRotation().pitch = 45;
+            rightLeg.getRotation().pitch = 45;
             torso.getRotation().pitch = -30;
             torso.getPosition().add(0, -w * 2, 0);
             head.getPosition().add(
-                3 * w * Mathc.cos(torso.getRotation().yaw * Maths.TO_RAD),
+                3 * w * Mathc.cos(-torso.getRotation().yaw * Maths.TO_RAD),
                 -w * 3,
-                3 * w * Mathc.sin(torso.getRotation().yaw * Maths.TO_RAD)
+                3 * w * Mathc.sin(-torso.getRotation().yaw * Maths.TO_RAD)
             );
         }else{
             torso.getRotation().pitch = 0;
-            leftLeg.getRotation().roll = 0;
-            rightLeg.getRotation().roll = 0;
+            leftLeg.getRotation().pitch = 0;
+            rightLeg.getRotation().pitch = 0;
         }
 
         // Animation
@@ -152,10 +152,10 @@ public class PlayerModel extends HumanoidModel{
         final float moveDist = player.getWalkDist(lerpFactor) * 4;
         final float bobbing = Math.min(1, player.getModelBobbing() * 10);
 
-        rightArm.getRotation().roll = -60 * Mathc.sin(moveDist) * bobbing;
-        leftArm.getRotation().roll = 60 * Mathc.sin(moveDist) * bobbing;
-        rightLeg.getRotation().roll = 60 * Mathc.sin(moveDist) * bobbing;
-        leftLeg.getRotation().roll = -60 * Mathc.sin(moveDist) * bobbing;
+        rightArm.getRotation().pitch = -60 * Mathc.sin(moveDist) * bobbing;
+        leftArm.getRotation().pitch = 60 * Mathc.sin(moveDist) * bobbing;
+        rightLeg.getRotation().pitch = 60 * Mathc.sin(moveDist) * bobbing;
+        leftLeg.getRotation().pitch = -60 * Mathc.sin(moveDist) * bobbing;
     }
 
 

@@ -1,9 +1,8 @@
 package minecraftose.client.renderer.particle;
 
-
-import jpize.gl.texture.Texture2D;
+import jpize.opengl.texture.Texture2D;
 import jpize.util.color.Color;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
 
 import java.util.function.Function;
 

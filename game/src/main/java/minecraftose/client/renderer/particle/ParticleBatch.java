@@ -1,28 +1,28 @@
 package minecraftose.client.renderer.particle;
 
-import jpize.gl.buffer.GlBufUsage;
-import jpize.gl.shader.Shader;
-import jpize.gl.tesselation.GlPrimitive;
-import jpize.gl.texture.Texture2D;
-import jpize.gl.type.GlType;
-import jpize.gl.vertex.GlVertAttr;
-import jpize.util.Disposable;
+import jpize.opengl.shader.Shader;
+import jpize.opengl.tesselation.GLPrimitive;
+import jpize.opengl.texture.Texture2D;
+import jpize.opengl.vertex.GLVertAttr;
+import generaloss.resourceflow.Disposable;
+import jpize.opengl.buffer.GLBufferUsage;
+import jpize.opengl.type.GLType;
 import jpize.util.camera.PerspectiveCamera;
 import jpize.util.color.Color;
-import jpize.util.math.matrix.Matrix4f;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.matrix.Matrix4f;
+import generaloss.spatialmath.vector.Vec3f;
 import jpize.util.mesh.Mesh;
 import jpize.util.region.Region;
-import jpize.util.res.Resource;
+import generaloss.resourceflow.resource.Resource;
 import minecraftose.client.control.camera.PlayerCamera;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static jpize.gl.buffer.QuadIndexBuffer.QUAD_INDICES;
-import static jpize.gl.buffer.QuadIndexBuffer.QUAD_VERTICES;
+public class ParticleBatch implements Disposable{
 
-public class ParticleBatch implements Disposable {
-    
+    public static final int QUAD_VERTICES = 4;
+    public static final int QUAD_INDICES = 6;
+
     final CopyOnWriteArrayList<ParticleInstance> instances;
     final Shader shader;
     final Matrix4f rotateMatrix;
@@ -41,11 +41,12 @@ public class ParticleBatch implements Disposable {
         this.rotateMatrix = new Matrix4f();
         // Buffer
         this.mesh = new Mesh(
-            new GlVertAttr(3, GlType.FLOAT), // pos3
-            new GlVertAttr(4, GlType.FLOAT), // col4
-            new GlVertAttr(2, GlType.FLOAT)  // uv2
+                new GLVertAttr(3, GLType.FLOAT), // pos3
+                new GLVertAttr(4, GLType.FLOAT), // col4
+                new GLVertAttr(2, GLType.FLOAT)  // uv2
         );
-        mesh.setMode(GlPrimitive.QUADS);
+        this.mesh.vertices().allocateData(size * QUAD_VERTICES);
+        this.mesh.setMode(GLPrimitive.QUADS);
         // Vertices array
         this.vertices = new float[QUAD_VERTICES * size * mesh.vertices().getVertexSize()];
         // Color
@@ -80,7 +81,7 @@ public class ParticleBatch implements Disposable {
         if(particleIndex >= size)
             flush();
         
-        // Texture
+        // Texture2D
         final Texture2D texture = instance.getParticle().texture;
         if(texture != lastTexture){
             flush();
@@ -141,7 +142,7 @@ public class ParticleBatch implements Disposable {
             return;
         
         shader.uniform("u_texture", lastTexture);
-        mesh.vertices().setData(vertices, GlBufUsage.STREAM_DRAW);
+        mesh.vertices().setData(vertices, GLBufferUsage.STREAM_DRAW);
         mesh.render(particleIndex * QUAD_INDICES);
         
         vertexIndex = 0;

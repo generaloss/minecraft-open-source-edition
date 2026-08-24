@@ -1,7 +1,7 @@
 package minecraftose.main.level;
 
-import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlock;
+import minecraftose.client.block.BlockProps;
 import minecraftose.main.Tickable;
 import minecraftose.main.block.ChunkBlockData;
 import minecraftose.main.chunk.ChunkBase;

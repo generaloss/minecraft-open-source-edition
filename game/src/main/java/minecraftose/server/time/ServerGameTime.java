@@ -1,7 +1,7 @@
 package minecraftose.server.time;
 
-import minecraftose.main.network.packet.s2c.game.S2CPacketTime;
 import minecraftose.main.time.GameTime;
+import minecraftose.main.network.packet.s2c.game.S2CPacketTime;
 import minecraftose.server.Server;
 
 public class ServerGameTime extends GameTime{

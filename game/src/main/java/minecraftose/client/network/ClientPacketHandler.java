@@ -1,18 +1,18 @@
 package minecraftose.client.network;
 
-import jpize.app.Jpize;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.security.AESKey;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.Minecraft;
 import minecraftose.client.chunk.ChunkC;
 import minecraftose.client.entity.LocalPlayer;
 import minecraftose.client.entity.RemotePlayer;
+import minecraftose.client.level.LevelC;
+import minecraftose.client.network.pipeline.security.AESKey;
 import minecraftose.main.chat.source.MessageSourceServer;
 import minecraftose.main.entity.Entity;
-import minecraftose.main.network.packet.c2s.game.C2SPacketRenderDistance;
 import minecraftose.main.network.packet.c2s.login.C2SPacketAuth;
 import minecraftose.main.network.packet.c2s.login.C2SPacketEncryptEnd;
+import minecraftose.main.network.packet.c2s.game.C2SPacketRenderDistance;
 import minecraftose.main.network.packet.s2c.game.*;
 import minecraftose.main.network.packet.s2c.login.S2CPacketEncryptStart;
 import minecraftose.main.text.Component;
@@ -48,7 +48,11 @@ public class ClientPacketHandler {
             return;
 
         // Load another level
-        if(localPlayer.getLevel() == null || !packet.levelName.equals(localPlayer.getLevel().getConfiguration().getName())){
+        final LevelC level = localPlayer.getLevel();
+        if(level == null)
+            return;
+
+        if(!packet.levelName.equals(level.getConfiguration().getName())){
             minecraft.createClientLevel(packet.levelName);
             // minecraft.getLevel().getChunkProvider().startLoadChunks(); //: deprecated method
             localPlayer.setLevel(minecraft.getLevel());
@@ -97,7 +101,7 @@ public class ClientPacketHandler {
     }
 
     public void playSound(S2CPacketPlaySound packet){
-        Jpize.syncExecutor().exec(() ->
+        Minecraft.syncExecutor.exec(() ->
             minecraft.getSoundPlayer().play(
                 packet.sound,
                 packet.volume, packet.pitch,

@@ -1,19 +1,18 @@
 package minecraftose.main.network.packet.s2c.game;
 
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.client.network.ClientPacketHandler;
 import minecraftose.main.audio.Sound;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 import minecraftose.main.registry.Registry;
 
 import java.io.IOException;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class S2CPacketPlaySound extends NetPacket<ClientPacketHandler>{
+public class S2CPacketPlaySound extends VisitorNetPacket<ClientPacketHandler> {
 
-    
-    public S2CPacketPlaySound(){}
+    public S2CPacketPlaySound(){ }
 
 
     public Sound sound;
@@ -35,7 +34,7 @@ public class S2CPacketPlaySound extends NetPacket<ClientPacketHandler>{
 
 
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeByte(sound.getID());
         stream.writeFloat(volume);
         stream.writeFloat(pitch);
@@ -45,7 +44,7 @@ public class S2CPacketPlaySound extends NetPacket<ClientPacketHandler>{
     }
 
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         sound = Registry.sound.get(stream.readByte());
         volume = stream.readFloat();
         pitch = stream.readFloat();

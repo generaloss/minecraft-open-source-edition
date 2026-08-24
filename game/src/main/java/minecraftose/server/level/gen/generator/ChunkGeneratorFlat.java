@@ -1,10 +1,10 @@
 package minecraftose.server.level.gen.generator;
 
-import jpize.util.math.ExtRandom;
+import generaloss.spatialmath.ExtRandom;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.chunk.ChunkBase;
-import minecraftose.server.level.LevelS;
 import minecraftose.server.level.chunk.ChunkS;
+import minecraftose.server.level.LevelS;
 import minecraftose.server.level.gen.ChunkGenerator;
 import minecraftose.server.level.gen.decoration.*;
 import minecraftose.server.level.gen.decoration.old.*;
@@ -46,10 +46,10 @@ public class ChunkGeneratorFlat extends ChunkGenerator{
         random.setSeed(Objects.hash(seed, baseX, baseZ));
 
         if(random.nextBoolean(0.01)){
-            final int x = random.nextInt(0, 15) + baseX;
-            final int z = random.nextInt(0, 15) + baseZ;
+            final int x = random.nextInt(15) + baseX;
+            final int z = random.nextInt(15) + baseZ;
 
-            switch(random.nextInt(9)){
+            switch(random.nextInt(10)){
                 case 1 -> DesertPyramid.generate(level, x, 3, z, random);
                 case 2 -> MiniPyramid.generate(level, x, 4, z, random);
                 case 3 -> Tower.generate(level, x, 4, z, random);

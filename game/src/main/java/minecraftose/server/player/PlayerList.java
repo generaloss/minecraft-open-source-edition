@@ -1,8 +1,8 @@
 package minecraftose.server.player;
 
-import jpize.util.math.vector.Vec3f;
-import jpize.util.net.packet.NetPacket;
-import jpize.util.net.tcp.TCPConnection;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.networkforge.tcp.TCPConnection;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.main.network.packet.s2c.game.*;
 import minecraftose.main.text.Component;
 import minecraftose.main.text.TextColor;
@@ -104,24 +104,24 @@ public class PlayerList{
     }
     
     
-    public void broadcastPacket(NetPacket<?> packet){
+    public void broadcastPacket(VisitorNetPacket<?> packet){
         for(ServerPlayer player: playerMap.values())
             player.sendPacket(packet);
     }
 
-    public void broadcastPacketExcept(NetPacket<?> packet, ServerPlayer except){
+    public void broadcastPacketExcept(VisitorNetPacket<?> packet, ServerPlayer except){
         for(ServerPlayer player: playerMap.values())
             if(player != except)
                 player.sendPacket(packet);
     }
 
-    public void broadcastPacketLevel(LevelS level, NetPacket<?> packet){
+    public void broadcastPacketLevel(LevelS level, VisitorNetPacket<?> packet){
         for(ServerPlayer player: playerMap.values())
             if(player.getLevel() == level)
                 player.sendPacket(packet);
     }
 
-    public void broadcastPacketLevelExcept(LevelS level, NetPacket<?> packet, ServerPlayer except){
+    public void broadcastPacketLevelExcept(LevelS level, VisitorNetPacket<?> packet, ServerPlayer except){
         for(ServerPlayer player: playerMap.values())
             if(player.getLevel() == level && player != except)
                 player.sendPacket(packet);

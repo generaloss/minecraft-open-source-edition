@@ -28,7 +28,7 @@ public class GenLayerSimplexNoise {
 
 		for (int z = 0; z < sizeZ; ++z) {
 			for (int x = 0; x < sizeX; ++x) {
-				cache[x + z * sizeX] = Math.max(0, Math.min(255, offset + (int)(amplitude * (1f + noisegen.get((xCoord + x) / scale, yCoord, (zCoord + z) / scale)))));
+				cache[x + z * sizeX] = Math.max(0, Math.min(255, offset + (int)(amplitude * (1f + noisegen.getNoise((xCoord + x) / scale, yCoord, (zCoord + z) / scale)))));
 			}
 		}
 

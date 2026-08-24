@@ -1,16 +1,20 @@
 package minecraftose.client.network;
 
-import jpize.app.Jpize;
-import jpize.util.net.packet.NetPacket;
-import jpize.util.net.packet.NetPacketDispatcher;
-import jpize.util.net.tcp.TCPClient;
-import jpize.util.net.tcp.TCPConnection;
-import jpize.util.security.AESKey;
+import generaloss.networkforge.packet.PacketReader;
+import generaloss.networkforge.packet.VisitorNetPacket;
+import generaloss.networkforge.tcp.TCPClient;
+import generaloss.networkforge.tcp.TCPConnection;
+import generaloss.networkforge.tcp.listener.CloseReason;
+import generaloss.networkforge.tcp.options.TCPConnectionOptionsHolder;
+import jpize.context.Jpize;
 import minecraftose.client.Minecraft;
+import minecraftose.client.network.pipeline.security.AESKey;
 import minecraftose.main.network.packet.s2c.game.*;
 import minecraftose.main.network.packet.s2c.login.S2CPacketEncryptStart;
 
+import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeoutException;
 
 public class ClientConnection {
 
@@ -19,17 +23,17 @@ public class ClientConnection {
     private final TCPClient tcpClient;
     private TCPConnection tcpConnection;
 
-    private final NetPacketDispatcher dispatcher;
+    private final PacketReader packetReader;
+    private final ConcurrentLinkedQueue<Runnable> packetsToHandle;
     private final ClientPacketHandler handler;
-    private final ConcurrentLinkedQueue<byte[]> receivedPacketsQueue;
 
     private int txCounter, rxCounter, tx, rx;
 
     public ClientConnection(Minecraft minecraft){
         this.minecraft = minecraft;
+        this.packetReader = new PacketReader();
+        this.packetsToHandle = new ConcurrentLinkedQueue<>();
         this.handler = new ClientPacketHandler(this);
-        this.dispatcher = new NetPacketDispatcher();
-        this.receivedPacketsQueue = new ConcurrentLinkedQueue<>();
         registerPackets();
 
         // Handle packets
@@ -44,9 +48,9 @@ public class ClientConnection {
         thread.start();
 
         this.tcpClient = new TCPClient()
-                .setOnConnect(this::connected)
-                .setOnDisconnect(this::disconnected)
-                .setOnReceive(this::received);
+            .registerOnReceive(this::onReceive)
+            .registerOnConnect(this::onConnect)
+            .registerOnDisconnect(this::onDisconnect);
     }
     
     public Minecraft getMinecraft(){
@@ -55,42 +59,68 @@ public class ClientConnection {
 
 
     public void connect(String address, int port){
-        tcpClient.connect(address, port);
-        tcpConnection.options().setTcpNoDelay(true);
+        final TCPConnectionOptionsHolder options = new TCPConnectionOptionsHolder();
+        options.setTcpNoDelay(true);
+        tcpClient.setInitialOptions(options);
+
+        try {
+            tcpClient.connect(address, port);
+        } catch(IOException | TimeoutException e) {
+            System.err.println("Failed to connect to " + address + ":" + port);
+            Jpize.exit();
+            throw new RuntimeException(e);
+        }
     }
 
     public void disconnect(){
-        tcpClient.disconnect();
+        tcpClient.close();
     }
 
-    public void sendPacket(NetPacket<?> packet){
+    public void sendPacket(VisitorNetPacket<?> packet){
         tcpConnection.send(packet);
         txCounter++;
     }
 
     public void encode(AESKey encodeKey){
-        tcpConnection.encode(encodeKey);
+        // if(encodeKey == null) {
+        //     tcpConnection.getCiphers().setCiphers(null, null);
+        // } else {
+        //     tcpConnection.getCiphers().setCiphers(
+        //         encodeKey.getEncryptCipher(),
+        //         encodeKey.getDecryptCipher()
+        //     );
+        // }
     }
 
 
-    public void received(TCPConnection sender, byte[] bytes){
-        receivedPacketsQueue.add(bytes);
+    public void onReceive(TCPConnection sender, byte[] bytes){
+        packetReader.tryRead(bytes).ifPresentOrElse(packet -> {
+            final Runnable packetHandleRunnable = () -> {
+                // noinspection rawtypes
+                if(packet instanceof VisitorNetPacket visitorPacket) {
+                    // noinspection unchecked
+                    visitorPacket.handle(handler);
+                } else {
+                    System.err.println("Client cannot handle packet ID=" + packet.getClass());
+                }
+            };
+            packetsToHandle.add(packetHandleRunnable);
+        }, () -> System.err.println("Client cannot read packet"));
     }
     
-    public void connected(TCPConnection connection){
+    public void onConnect(TCPConnection connection){
         this.tcpConnection = connection;
     }
     
-    public void disconnected(TCPConnection connection){
+    public void onDisconnect(TCPConnection connection, CloseReason reason){
         Jpize.exit();
     }
 
 
     public void handlePackets(){
-        while(!receivedPacketsQueue.isEmpty()){
-            final byte[] bytes = receivedPacketsQueue.poll();
-            dispatcher.readPacket(bytes, handler);
-            rxCounter += dispatcher.handlePackets();
+        while(!packetsToHandle.isEmpty()){
+            packetsToHandle.poll().run();
+            rxCounter++;
         }
     }
 
@@ -112,26 +142,24 @@ public class ClientConnection {
 
 
     private void registerPackets(){
-        dispatcher.register(
-            S2CPacketAbilities.class,
-            S2CPacketBlockUpdate.class,
-            S2CPacketChatMessage.class,
-            S2CPacketChunk.class,
-            S2CPacketDisconnect.class,
-            S2CPacketEncryptStart.class,
-            S2CPacketEntityMove.class,
-            S2CPacketLightUpdate.class,
-            S2CPacketPlayerSneaking.class,
-            S2CPacketPlaySound.class,
-            S2CPacketPong.class,
-            S2CPacketRemoveEntity.class,
-            S2CPacketSpawnEntity.class,
-            S2CPacketSpawnInfo.class,
-            S2CPacketSpawnPlayer.class,
-            S2CPacketTeleportPlayer.class,
-            S2CPacketTime.class,
-            S2CPacketPlayerVelocity.class
-        );
+        packetReader.register(S2CPacketAbilities.class);
+        packetReader.register(S2CPacketBlockUpdate.class);
+        packetReader.register(S2CPacketChatMessage.class);
+        packetReader.register(S2CPacketChunk.class);
+        packetReader.register(S2CPacketDisconnect.class);
+        packetReader.register(S2CPacketEncryptStart.class);
+        packetReader.register(S2CPacketEntityMove.class);
+        packetReader.register(S2CPacketLightUpdate.class);
+        packetReader.register(S2CPacketPlayerSneaking.class);
+        packetReader.register(S2CPacketPlaySound.class);
+        packetReader.register(S2CPacketPong.class);
+        packetReader.register(S2CPacketRemoveEntity.class);
+        packetReader.register(S2CPacketSpawnEntity.class);
+        packetReader.register(S2CPacketSpawnInfo.class);
+        packetReader.register(S2CPacketSpawnPlayer.class);
+        packetReader.register(S2CPacketTeleportPlayer.class);
+        packetReader.register(S2CPacketTime.class);
+        packetReader.register(S2CPacketPlayerVelocity.class);
     }
     
 }

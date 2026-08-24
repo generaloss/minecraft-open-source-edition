@@ -1,6 +1,6 @@
 package minecraftose.client.chunk.builder;
 
-import jpize.util.time.Stopwatch;
+import generaloss.chronokit.Stopwatch;
 import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.client.block.model.BlockModel;
@@ -18,7 +18,7 @@ import minecraftose.main.chunk.storage.HeightmapType;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static minecraftose.main.chunk.ChunkUtils.MAX_LIGHT_LEVEL;
+import static minecraftose.main.chunk.ChunkUtils.*;
 
 public class ChunkBuilder{
 

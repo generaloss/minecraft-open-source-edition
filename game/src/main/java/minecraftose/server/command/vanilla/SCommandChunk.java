@@ -1,6 +1,6 @@
 package minecraftose.server.command.vanilla;
 
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.main.chunk.ChunkSection;
 import minecraftose.main.command.CommandContext;
 import minecraftose.main.command.builder.Commands;
@@ -8,8 +8,8 @@ import minecraftose.main.command.source.CommandSource;
 import minecraftose.main.network.packet.s2c.game.S2CPacketChunk;
 import minecraftose.main.text.Component;
 import minecraftose.main.text.TextColor;
-import minecraftose.server.command.ServerCommandDispatcher;
 import minecraftose.server.level.chunk.ChunkS;
+import minecraftose.server.command.ServerCommandDispatcher;
 
 import java.util.Arrays;
 

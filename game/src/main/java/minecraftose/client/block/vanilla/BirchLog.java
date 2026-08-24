@@ -1,7 +1,7 @@
 package minecraftose.client.block.vanilla;
 
-import minecraftose.client.block.BlockRotation;
 import minecraftose.client.block.ClientBlock;
+import minecraftose.client.block.BlockRotation;
 import minecraftose.client.block.model.BlockModel;
 import minecraftose.client.block.shape.BlockCollide;
 import minecraftose.client.block.shape.BlockCursor;

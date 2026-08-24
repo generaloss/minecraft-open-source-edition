@@ -1,11 +1,11 @@
 package minecraftose.client.control.camera;
 
-import jpize.app.Jpize;
+import generaloss.spatialmath.vector.Vec2d;
+import jpize.context.Jpize;
 import jpize.util.camera.PerspectiveCamera;
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec2d;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.Mathc;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.Minecraft;
 import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
@@ -34,13 +34,13 @@ public class PlayerCamera extends PerspectiveCamera {
         this.minecraft = minecraft;
         this.player = minecraft.getPlayer();
 
-        this.zoom = 1F;
+        this.zoom = 1;
         
         this.perspective = CameraPerspective.FIRST_PERSON;
         this.hitDirection = new Vec3f();
         this.eyeHeight = player.getEyeHeight();
         
-        super.setImaginaryOrigins(true, false, true);
+        setImaginaryOrigins(true, false, true);
     }
     
     public Minecraft getMinecraft(){
@@ -63,14 +63,14 @@ public class PlayerCamera extends PerspectiveCamera {
 
         // Set pos & rot
         super.position.set(player.getLerpPosition());
-        super.rotation().set(player.getInput().getRotation().getTarget());
+        super.rotation().clampPitch();
 
         // Perspective
         final float thirdCameraDist = 4;
-        if(perspective.isMirrored())
-            super.rotation().yaw += 180;
         if(!perspective.isFirstPerson())
-            super.position.sub(super.rotation().getDirection().copy().mul(thirdCameraDist));
+            super.position.sub(super.getDirection().mul(perspective.isMirrored() ? -thirdCameraDist : thirdCameraDist));
+        if(perspective.isMirrored())
+            super.rotation().pitch += 180;
 
         // Eye Height
         eyeHeight += (player.getEyeHeight() - eyeHeight) * deltaTime * 12;
@@ -82,13 +82,14 @@ public class PlayerCamera extends PerspectiveCamera {
         float fov = options.getFieldOfView() / zoom;
         if(player.isSprinting())
             fov *= 1.125F;
+
+        fov = Maths.clamp(Mathc.pow(fov, 1F + player.getVelocity().len() * (player.getVelocity().dot(super.getDirection()) * 0.5 + 0.5) * 0.01), 30, 150);
         
         setFov(fov);
 
         // Directed Hit
         hitDirection.mul(0.8);
-        if(hitDirection.len() > 3F)
-            hitDirection.nor().mul(3F);
+        hitDirection.clampLength(3F);
         final Vec3f hitLocalDirection = hitDirection.copy().rotateY(super.rotation().yaw);
         super.rotation().pitch -= hitLocalDirection.x * 1.5F;
         super.rotation().roll -= hitLocalDirection.z * 1.5F;
@@ -97,10 +98,10 @@ public class PlayerCamera extends PerspectiveCamera {
         //this.rotation.pitch -= Maths.clamp(player.getVelocity().y / 2, -10, 10);
 
         // View Bobbing
-        // bobView(minecraft.getTime().getTickLerpFactor());
+        // this.bobView(minecraft.getTime().getTickLerpFactor());
 
         // Interpolate FOV
-        final float currentFOV = super.getFOV();
+        final float currentFOV = getFOV();
         super.setFOV(currentFOV + (notInterpolatedFov - currentFOV) * deltaTime * 9);
         super.update();
 
@@ -121,6 +122,8 @@ public class PlayerCamera extends PerspectiveCamera {
 
         final float rz = sin * 3;
         final float rx = Math.abs(Mathc.cos(walkDist - 0.2)) * bobbing * 5;
+
+        System.out.println("Bobbing: " + rz + "  " + rx);
 
         super.rotation().roll += rz;
         super.rotation().pitch += rx;

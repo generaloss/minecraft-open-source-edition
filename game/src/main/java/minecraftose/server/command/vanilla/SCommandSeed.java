@@ -12,7 +12,7 @@ public class SCommandSeed{
     public static void registerTo(ServerCommandDispatcher dispatcher){
         dispatcher.newCommand(Commands.literal("seed")
             .requiresPlayer()
-            .executes(SCommandSeed::sendSeed)
+            .executes( SCommandSeed::sendSeed)
         );
     }
     

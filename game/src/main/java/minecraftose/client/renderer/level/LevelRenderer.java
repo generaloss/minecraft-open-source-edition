@@ -1,19 +1,19 @@
 package minecraftose.client.renderer.level;
 
-import jpize.app.Jpize;
-import jpize.gl.Gl;
-import jpize.gl.glenum.GlTarget;
-import jpize.gl.shader.Shader;
-import jpize.gl.tesselation.Framebuffer2D;
-import jpize.gl.tesselation.Framebuffer3D;
-import jpize.gl.texture.Texture2D;
-import jpize.util.Disposable;
-import jpize.util.color.Color;
+import jpize.context.Jpize;
+import jpize.opengl.framebuffer.Framebuffer2D;
+import jpize.opengl.framebuffer.Framebuffer3D;
+import jpize.opengl.gl.GL;
+import jpize.opengl.glenum.GLTarget;
+import jpize.opengl.shader.Shader;
+import jpize.opengl.texture.Texture2D;
 import jpize.util.mesh.TextureBatch;
-import jpize.util.res.Resource;
+import jpize.util.color.Color;
+import generaloss.resourceflow.resource.Resource;
 import minecraftose.client.control.camera.PlayerCamera;
 import minecraftose.client.renderer.GameRenderer;
 import minecraftose.client.renderer.particle.ParticleBatch;
+import generaloss.resourceflow.Disposable;
 
 public class LevelRenderer implements Disposable {
 
@@ -61,7 +61,7 @@ public class LevelRenderer implements Disposable {
         this.screenColor = new Color();
 
         // For ChunkBorder and BlockSelector line rendering
-        Gl.lineWidth(2);
+        GL.lineWidth(2);
     }
     
     public GameRenderer getGameRenderer(){
@@ -84,18 +84,18 @@ public class LevelRenderer implements Disposable {
         // Render world
         // postFramebuffer.begin();
         // {
-            Gl.enable(GlTarget.DEPTH_TEST);
+            GL.enable(GLTarget.DEPTH_TEST);
             
-            skyRenderer.render(camera); // Sky
+            skyRenderer.render(camera);    // Sky
             cloudsRenderer.render(camera); // Clouds
-            chunkRenderer.render(camera); // Chunks
+            chunkRenderer.render(camera);  // Chunks
             playerRenderer.render(camera); // Player
             entityRenderer.render(camera); // Entities
             blockSelectorRenderer.render(camera); // Block selector
-            chunkBorderRenderer.render(camera); // Chunk border
-            particleBatch.render(camera); // Particles
+            chunkBorderRenderer.render(camera);   // Chunk border
+            particleBatch.render(camera);  // Particles
             
-            Gl.disable(GlTarget.DEPTH_TEST);
+            GL.disable(GLTarget.DEPTH_TEST);
         // }
         // postFramebuffer.end();
         

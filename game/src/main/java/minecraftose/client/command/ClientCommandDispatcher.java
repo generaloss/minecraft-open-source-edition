@@ -1,7 +1,7 @@
 package minecraftose.client.command;
 
 import minecraftose.client.Minecraft;
-import minecraftose.client.command.vanilla.CCommandOption;
+import minecraftose.client.command.vanilla.*;
 import minecraftose.main.command.Command;
 import minecraftose.main.command.CommandContext;
 import minecraftose.main.command.argument.CommandArg;

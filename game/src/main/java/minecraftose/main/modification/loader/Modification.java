@@ -1,7 +1,6 @@
 package minecraftose.main.modification.loader;
 
-
-import jpize.util.res.Resource;
+import generaloss.resourceflow.resource.Resource;
 
 import java.lang.reflect.Method;
 import java.net.URLClassLoader;

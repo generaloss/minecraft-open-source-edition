@@ -1,8 +1,8 @@
 package minecraftose.server.level;
 
-import jpize.util.math.vector.Vec2f;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.time.TickGenerator;
+import generaloss.spatialmath.vector.Vec2f;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.chronokit.TickGenerator;
 import minecraftose.main.chunk.ChunkBase;
 import minecraftose.main.chunk.storage.ChunkPos;
 import minecraftose.main.entity.Entity;

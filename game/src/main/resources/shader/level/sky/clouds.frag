@@ -22,13 +22,13 @@ void main(){
     fragColor.a = 0.85;
 
     // Fog
-    if(u_fogEnabled){
-        float fogMin = u_renderDistanceBlocks * u_fogStart;
-        float fogMax = u_renderDistanceBlocks;
-        float dist = sqrt(fragCoord.x * fragCoord.x + fragCoord.z * fragCoord.z);
-        float fogFactor = 1 - (fogMax - dist) / (fogMax - fogMin);
-        fragColor = mix(fragColor, u_fogColor, clamp(pow(fogFactor, 1.3), 0.0, 1.0));
-    }
+    //if(u_fogEnabled){
+    //    float fogMin = u_renderDistanceBlocks * u_fogStart;
+    //    float fogMax = u_renderDistanceBlocks;
+    //    float dist = sqrt(fragCoord.x * fragCoord.x + fragCoord.z * fragCoord.z);
+    //    float fogFactor = 1.0 - (fogMax - dist) / (fogMax - fogMin);
+    //    fragColor.a = 1.0 - clamp(pow(fogFactor, 1.3), 0.0, 1.0);
+    //}
 
     gl_FragColor = fragColor;
 }

@@ -1,5 +1,6 @@
 package minecraftose.main.entity;
 
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.main.level.Level;
 
 public class Player extends Entity{
@@ -23,11 +24,10 @@ public class Player extends Entity{
     }
     
     public void setSprinting(boolean sprinting){
-        if(sprinting && this.isCollidedTo(super.getRotation().getDirection().mul(1, 0, 1))){
+        if(sprinting && isCollidedTo(getRotation().getDirection(new Vec3f()).mul(1, 0, 1)))
             this.sprinting = false;
-        }else{
+        else
             this.sprinting = sprinting;
-        }
     }
     
     public boolean isSneaking(){

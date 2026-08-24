@@ -1,10 +1,11 @@
 package minecraftose.client.audio;
 
+import generaloss.resourceflow.Disposable;
+import generaloss.spatialmath.Maths;
 import jpize.audio.util.AlMusic;
-import jpize.util.math.Maths;
 import minecraftose.client.Minecraft;
 
-public class MusicPlayer {
+public class MusicPlayer implements Disposable {
 
     private final Minecraft minecraft;
 
@@ -34,22 +35,17 @@ public class MusicPlayer {
 
     private void play(){
         final String musicID = group.getList()[index];
-        music = minecraft.getResources().getMusic(musicID);
-        if(music == null){
+        final AlMusic almusic = minecraft.getResources().getMusic(musicID);
+        if(almusic == null){
             System.err.println("Music " + musicID + " is not found");
             return;
         }
 
-        music.setGain(0.15);
-        music.setOnComplete(this::playNext);
+        music = almusic;
         music.play();
+        music.setOnComplete(this::playNext);
 
         System.out.println("Playing: " + musicID + "(" + index + ")");
-    }
-
-    public void update() {
-        if(music != null)
-            music.update();
     }
 
     private void playNext(){
@@ -58,6 +54,12 @@ public class MusicPlayer {
             index = 0;
 
         play();
+    }
+
+    @Override
+    public void dispose(){
+        if(music != null)
+            music.dispose();
     }
 
 }

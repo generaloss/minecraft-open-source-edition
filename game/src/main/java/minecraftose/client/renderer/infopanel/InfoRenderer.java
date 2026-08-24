@@ -1,13 +1,12 @@
 package minecraftose.client.renderer.infopanel;
 
-import jpize.app.Jpize;
-import jpize.util.Disposable;
+import jpize.context.Jpize;
 import jpize.util.font.Font;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.math.vector.Vec3i;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3i;
+import generaloss.chronokit.TimeUtils;
 import jpize.util.mesh.TextureBatch;
-import jpize.util.time.TimeUtils;
 import minecraftose.client.Minecraft;
 import minecraftose.client.audio.SoundPlayer;
 import minecraftose.client.chunk.builder.ChunkBuilder;
@@ -26,10 +25,11 @@ import minecraftose.main.modification.loader.Modification;
 import minecraftose.main.text.Component;
 import minecraftose.main.text.TextColor;
 import minecraftose.main.time.GameTime;
+import generaloss.resourceflow.Disposable;
 
 import java.util.Collection;
 
-public class InfoRenderer implements Disposable {
+public class InfoRenderer implements Disposable{
     
     private final GameRenderer gameRenderer;
     
@@ -43,14 +43,14 @@ public class InfoRenderer implements Disposable {
     public InfoRenderer(GameRenderer gameRenderer){
         this.gameRenderer = gameRenderer;
         
-        textBatch = gameRenderer.getTextComponentBatch();
+        textBatch = new TextComponentBatch();
         batch = new TextureBatch();
-        
+
         animationEnded = true;
         
         // Open
         new Thread(()->{
-            TimeUtils.delaySeconds(0.5F);
+            TimeUtils.delayMillis(500);
             setOpen(true);
         }).start();
     }
@@ -84,6 +84,7 @@ public class InfoRenderer implements Disposable {
     }
     
     public void render(){
+        textBatch.updateScale();
         animate();
         
         if(!open && animationEnded)
@@ -181,8 +182,8 @@ public class InfoRenderer implements Disposable {
 
         // Rotation
         info(TextColor.DARK_GREEN, "Rotation", TextColor.AQUA,
-            "Yaw: " + String.format("%.1f", Maths.frac(camera.rotation().getYaw(), -180, 180)) +
-            " Pitch: " + String.format("%.1f", camera.rotation().getPitch())
+            "Yaw: " + String.format("%.1f", Maths.frac(camera.rotation().yaw, -180, 180)) +
+            " Pitch: " + String.format("%.1f", camera.rotation().pitch)
         );
         
         // Speed
@@ -326,6 +327,7 @@ public class InfoRenderer implements Disposable {
     @Override
     public void dispose(){
         batch.dispose();
+        textBatch.dispose();
     }
     
 }

@@ -1,20 +1,19 @@
 package minecraftose.server.network;
 
-import jpize.util.math.vector.Vec3f;
-import jpize.util.net.packet.NetPacket;
-import jpize.util.net.tcp.TCPConnection;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.networkforge.tcp.TCPConnection;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlock;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.audio.SoundGroup;
 import minecraftose.main.audio.SoundType;
-import minecraftose.main.block.BlockSetType;
 import minecraftose.main.block.ChunkBlockData;
+import minecraftose.main.block.BlockSetType;
 import minecraftose.main.chunk.ChunkBase;
 import minecraftose.main.chunk.storage.HeightmapType;
 import minecraftose.main.command.source.CommandServerPlayerSource;
 import minecraftose.main.entity.Entity;
-import minecraftose.main.network.packet.PacketHandler;
 import minecraftose.main.network.packet.c2s.game.*;
 import minecraftose.main.network.packet.c2s.game.move.C2SPacketMove;
 import minecraftose.main.network.packet.c2s.game.move.C2SPacketMoveAndRot;
@@ -23,11 +22,11 @@ import minecraftose.main.network.packet.s2c.game.*;
 import minecraftose.main.text.Component;
 import minecraftose.main.text.TextColor;
 import minecraftose.server.Server;
-import minecraftose.server.level.LevelS;
 import minecraftose.server.level.chunk.ChunkS;
+import minecraftose.server.level.LevelS;
 import minecraftose.server.player.ServerPlayer;
 
-public class ServerPlayerGameConnection implements PacketHandler {
+public class ServerPlayerGameConnection implements ServerPacketHandler {
     
     private final ServerPlayer player;
     private final Server server;
@@ -50,8 +49,9 @@ public class ServerPlayerGameConnection implements PacketHandler {
         connection.close();
     }
     
-    public void sendPacket(NetPacket<?> packet){
-        connection.send(packet);
+    public void sendPacket(VisitorNetPacket<?> packet){
+        if(connection.isConnected())
+            connection.send(packet);
     }
 
 

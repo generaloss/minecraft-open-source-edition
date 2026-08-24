@@ -1,15 +1,13 @@
 package minecraftose.client.control.camera;
 
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.Minecraft;
-import minecraftose.client.control.PlayerInput;
 import minecraftose.client.options.KeyMapping;
 import minecraftose.client.options.Options;
+import minecraftose.client.control.PlayerInput;
+import minecraftose.client.entity.LocalPlayer;
 
-public class HorizontalMoveController {
-
-    private static final Vec3f FORWARD = new Vec3f(1, 0, 0);
-    private static final Vec3f LEFT = new Vec3f(0, 0, 1);
+public class HorizontalMoveController{
     
     private final PlayerInput playerController;
     private final Vec3f motion;
@@ -24,13 +22,18 @@ public class HorizontalMoveController {
         
         final Minecraft minecraft = playerController.getPlayer().getMinecraft();
         final Options options = minecraft.getOptions();
-        final Vec3f forward = minecraft.getPlayer().getRotation().getDirectionHorizontal();
-        final Vec3f left = forward.copy().rotateY(90);
-
-        if(options.getKey(KeyMapping.FORWARD).pressed()) motion.add(forward);
-        if(options.getKey(KeyMapping.BACK).pressed())    motion.sub(forward);
-        if(options.getKey(KeyMapping.LEFT).pressed())    motion.add(left);
-        if(options.getKey(KeyMapping.RIGHT).pressed())   motion.sub(left);
+        
+        final LocalPlayer player = minecraft.getPlayer();
+        final Vec3f dir = player.getRotation().getDirectionHorizontal(new Vec3f());
+        
+        if(options.getKey(KeyMapping.FORWARD).pressed())
+            motion.add(dir.x, 0, dir.z);
+        if(options.getKey(KeyMapping.BACK).pressed())
+            motion.sub(dir.x, 0, dir.z);
+        if(options.getKey(KeyMapping.LEFT).pressed())
+            motion.add(-dir.z, 0, dir.x);
+        if(options.getKey(KeyMapping.RIGHT).pressed())
+            motion.sub(-dir.z, 0, dir.x);
         
         motion.nor();
     }

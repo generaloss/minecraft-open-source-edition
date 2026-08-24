@@ -9,7 +9,7 @@ void main(){
 
     // Fog
     float hypot = sqrt(fragCoord.x * fragCoord.x + fragCoord.y * fragCoord.y + fragCoord.z * fragCoord.z);
-    float angle = asin(fragCoord.y / hypot) / 3.1415926535897932384246 * 2;
+    float angle = asin(fragCoord.y / hypot) / 3.1415 * 2;
 
     float fogMinAngle = 0;
     float fogMaxAngle = 0.5;

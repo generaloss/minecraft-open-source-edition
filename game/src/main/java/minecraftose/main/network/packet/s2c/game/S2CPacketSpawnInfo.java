@@ -1,16 +1,16 @@
 package minecraftose.main.network.packet.s2c.game;
 
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.client.network.ClientPacketHandler;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class S2CPacketSpawnInfo extends NetPacket<ClientPacketHandler>{
+public class S2CPacketSpawnInfo extends VisitorNetPacket<ClientPacketHandler> {
 
-    public S2CPacketSpawnInfo(){}
+    public S2CPacketSpawnInfo(){ }
     
     public String levelName;
     public Vec3f position;
@@ -26,14 +26,14 @@ public class S2CPacketSpawnInfo extends NetPacket<ClientPacketHandler>{
     
     
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeUTF(levelName);
         stream.writeVec3f(position);
         stream.writeLong(gameTime);
     }
     
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         levelName = stream.readUTF();
         position = stream.readVec3f();
         gameTime = stream.readLong();

@@ -30,7 +30,7 @@ public class SimplexNoise {
     }
 
 
-    public double get(double x, double y) {
+    public double getNoise(double x, double y) {
         double result = 0;
 
         for (int i = 0; i < octaves.length; i++) {
@@ -41,7 +41,7 @@ public class SimplexNoise {
         return result;
     }
 
-    public double get(double x, double y, double z) {
+    public double getNoise(double x, double y, double z) {
         double result = 0;
 
         for(int i = 0; i < octaves.length; i++) {
@@ -52,7 +52,7 @@ public class SimplexNoise {
     }
     
     
-    public double get(double x, double y, double z, float highoctavefactor) {
+    public double getNoise(double x, double y, double z, float highoctavefactor) {
         double result = 0;
 
         for(int i = 0; i < octaves.length; i++) {

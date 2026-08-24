@@ -1,6 +1,6 @@
 package minecraftose.client.level;
 
-import jpize.util.time.TickGenerator;
+import generaloss.chronokit.TickGenerator;
 import minecraftose.client.Minecraft;
 import minecraftose.client.chunk.ChunkC;
 import minecraftose.client.entity.LocalPlayer;

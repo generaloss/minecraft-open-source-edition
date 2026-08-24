@@ -1,7 +1,7 @@
 package minecraftose.server.level.chunk;
 
-import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlock;
+import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.block.ChunkBlockData;
 import minecraftose.main.chunk.ChunkBase;
@@ -69,7 +69,6 @@ public class ChunkS extends ChunkBase{
 
     public boolean setBlockTest(int lx, int y, int lz, ClientBlock block){
         final BlockProps oldBlock = super.getBlockProps(lx, y, lz);
-
 
         final short blockData = block.getDefaultData();
         final boolean result = super.setBlockData(lx, y, lz, blockData);

@@ -1,11 +1,11 @@
 package minecraftose.server.command.vanilla;
 
-import minecraftose.main.command.CommandContext;
-import minecraftose.main.command.builder.Commands;
-import minecraftose.main.command.source.CommandSource;
 import minecraftose.main.text.Component;
 import minecraftose.main.text.TextColor;
+import minecraftose.main.command.CommandContext;
 import minecraftose.server.command.ServerCommandDispatcher;
+import minecraftose.main.command.builder.Commands;
+import minecraftose.main.command.source.CommandSource;
 import minecraftose.server.player.ServerPlayer;
 
 import java.util.Collection;

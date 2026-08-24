@@ -1,8 +1,7 @@
 package minecraftose.client.entity.model;
 
-
-import jpize.gl.type.GlType;
-import jpize.gl.vertex.GlVertAttr;
+import jpize.opengl.type.GLType;
+import jpize.opengl.vertex.GLVertAttr;
 import jpize.util.mesh.IndexedMesh;
 
 public class BoxBuilder{
@@ -21,9 +20,9 @@ public class BoxBuilder{
         this.z2 = z2;
         
         mesh = new IndexedMesh(
-                new GlVertAttr(3, GlType.FLOAT),
-                new GlVertAttr(4, GlType.FLOAT),
-                new GlVertAttr(2, GlType.FLOAT)
+                new GLVertAttr(3, GLType.FLOAT),
+                new GLVertAttr(4, GLType.FLOAT),
+                new GLVertAttr(2, GLType.FLOAT)
         );
         vertices = new float[4 * 6 * mesh.vertices().getVertexSize()];
     }

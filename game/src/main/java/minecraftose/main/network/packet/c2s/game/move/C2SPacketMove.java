@@ -1,19 +1,17 @@
 package minecraftose.main.network.packet.c2s.game.move;
 
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.client.entity.LocalPlayer;
 import minecraftose.server.network.ServerPlayerGameConnection;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class C2SPacketMove extends NetPacket<ServerPlayerGameConnection>{
+public class C2SPacketMove extends VisitorNetPacket<ServerPlayerGameConnection> {
     
-        
-    public C2SPacketMove(){}
-    
+    public C2SPacketMove(){ }
     
     public Vec3f position;
     public Vec3f velocity;
@@ -26,13 +24,13 @@ public class C2SPacketMove extends NetPacket<ServerPlayerGameConnection>{
     
     
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeVec3f(position);
         stream.writeVec3f(velocity);
     }
     
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         position = stream.readVec3f();
         velocity = new Vec3f(stream.readVec3f());
     }

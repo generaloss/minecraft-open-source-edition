@@ -1,8 +1,8 @@
 package minecraftose.server.level.gen.generator;
 
-import jpize.util.math.ExtRandom;
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
+import generaloss.spatialmath.ExtRandom;
+import generaloss.spatialmath.Mathc;
+import generaloss.spatialmath.Maths;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.biome.Biome;
 import minecraftose.main.biome.chunk.BiomeMap;
@@ -10,14 +10,14 @@ import minecraftose.main.chunk.ChunkBase;
 import minecraftose.main.chunk.storage.Heightmap;
 import minecraftose.main.chunk.storage.HeightmapType;
 import minecraftose.main.registry.Registry;
-import minecraftose.server.level.LevelS;
 import minecraftose.server.level.chunk.ChunkS;
-import minecraftose.server.level.gen.ChunkGenerator;
+import minecraftose.server.level.LevelS;
 import minecraftose.server.level.gen.decoration.*;
 import minecraftose.server.level.gen.decoration.old.*;
+import minecraftose.server.level.gen.generator.testnew.NoiseOctavesAlpha;
+import minecraftose.server.level.gen.ChunkGenerator;
 import minecraftose.server.level.gen.generator.testnew.BiomeVC;
 import minecraftose.server.level.gen.generator.testnew.GenLayerVC;
-import minecraftose.server.level.gen.generator.testnew.NoiseOctavesAlpha;
 
 import java.util.Random;
 
@@ -177,7 +177,7 @@ public class ChunkGeneratorTestNew extends ChunkGenerator{
                 final Biome biome = biomes.getBiome(lx, lz);
 
                 chunk.setBlock(lx, height, lz, biome.topBlock);
-                for(int i = 1; i < random.nextInt(3, 5); i++)
+                for(int i = 1; i < random.nextInt(5 - 3) + 3; i++)
                     chunk.setBlock(lx, height - i, lz, biome.fillerBlock);
             }
         }
@@ -278,13 +278,12 @@ public class ChunkGeneratorTestNew extends ChunkGenerator{
                 ++counter;
                 for(int y = 0; y < ySize; ++y){
                     double minblendhgvar = minBlendedHeight;
-                    double maxblendhgvar = maxBlendedHeight;
                     minblendhgvar += noise6var * 0.2D;
                     minblendhgvar = minblendhgvar * ySize / 16.0D;
 
                     double adjustedminhg = ySize / 2.0D + minblendhgvar * 4.0D;
-                    double result = 0.0D;
-                    double theheight = (y - adjustedminhg) * 12.0D / (2.70 + maxblendhgvar);   // * 256.0D / 256.0D
+                    double result;
+                    double theheight = (y - adjustedminhg) * 12.0D / (2.70 + (double) maxBlendedHeight);   // * 256.0D / 256.0D
 
                     if(theheight < 0.0D){
                         theheight *= 4.0D;

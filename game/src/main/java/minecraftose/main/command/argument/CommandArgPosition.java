@@ -1,6 +1,6 @@
 package minecraftose.main.command.argument;
 
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.main.command.source.CommandSource;
 
 public class CommandArgPosition extends CommandArg{

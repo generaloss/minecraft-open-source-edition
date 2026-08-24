@@ -21,11 +21,11 @@ import java.util.Random;
  */
 
 public class SimplexNoiseOctave {  // Simplex noise in 2D, 3D and 4D
-  private static final Grad[] grad3 = {new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),
+  private static Grad grad3[] = {new Grad(1,1,0),new Grad(-1,1,0),new Grad(1,-1,0),new Grad(-1,-1,0),
                                  new Grad(1,0,1),new Grad(-1,0,1),new Grad(1,0,-1),new Grad(-1,0,-1),
                                  new Grad(0,1,1),new Grad(0,-1,1),new Grad(0,1,-1),new Grad(0,-1,-1)};
 
-  private static final Grad[] grad4 = {new Grad(0,1,1,1),new Grad(0,1,1,-1),new Grad(0,1,-1,1),new Grad(0,1,-1,-1),
+  private static Grad grad4[]= {new Grad(0,1,1,1),new Grad(0,1,1,-1),new Grad(0,1,-1,1),new Grad(0,1,-1,-1),
                    new Grad(0,-1,1,1),new Grad(0,-1,1,-1),new Grad(0,-1,-1,1),new Grad(0,-1,-1,-1),
                    new Grad(1,0,1,1),new Grad(1,0,1,-1),new Grad(1,0,-1,1),new Grad(1,0,-1,-1),
                    new Grad(-1,0,1,1),new Grad(-1,0,1,-1),new Grad(-1,0,-1,1),new Grad(-1,0,-1,-1),
@@ -35,11 +35,11 @@ public class SimplexNoiseOctave {  // Simplex noise in 2D, 3D and 4D
                    new Grad(-1,1,1,0),new Grad(-1,1,-1,0),new Grad(-1,-1,1,0),new Grad(-1,-1,-1,0)};
 
 
-  private final short[] p = new short[255];
+  private short p[] = new short[255];
 
   // To remove the need for index wrapping, double the permutation table length
-  private final short[] perm = new short[512];
-  private final short[] permMod12 = new short[512];
+  private short perm[] = new short[512];
+  private short permMod12[] = new short[512];
   
   public SimplexNoiseOctave(long seed) {
 	  	Random rand=new Random(seed);

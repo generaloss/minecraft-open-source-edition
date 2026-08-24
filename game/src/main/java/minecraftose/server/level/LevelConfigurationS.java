@@ -1,6 +1,6 @@
 package minecraftose.server.level;
 
-import jpize.util.math.vector.Vec2f;
+import generaloss.spatialmath.vector.Vec2f;
 import minecraftose.main.level.LevelConfiguration;
 import minecraftose.server.level.gen.ChunkGenerator;
 

@@ -1,19 +1,19 @@
 package minecraftose.client.control;
 
-import jpize.app.Jpize;
-import jpize.gl.Gl;
-import jpize.gl.tesselation.GlFace;
-import jpize.gl.tesselation.GlPolygonMode;
-import jpize.glfw.input.Key;
-import jpize.glfw.input.MouseBtn;
-import jpize.util.math.Maths;
-import jpize.util.math.axisaligned.AABox;
-import jpize.util.math.axisaligned.AABoxBody;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.math.vector.Vec3i;
+import jpize.context.Jpize;
+import jpize.context.input.MouseBtn;
+import jpize.opengl.gl.GL;
+import jpize.context.input.Key;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.axisaligned.AABox;
+import generaloss.spatialmath.axisaligned.AABoxBody;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3i;
+import jpize.opengl.tesselation.GLFace;
+import jpize.opengl.tesselation.GLPolygonMode;
 import minecraftose.client.Minecraft;
-import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlock;
+import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.client.block.shape.BlockCollide;
 import minecraftose.client.chat.Chat;
@@ -42,7 +42,6 @@ public class GameInput{
     
     private final Minecraft minecraft;
     private boolean f3Plus;
-    private ClientBlock selectedBlock = ClientBlocks.GRASS_BLOCK;
     
     public GameInput(Minecraft minecraft){
         this.minecraft = minecraft;
@@ -63,7 +62,7 @@ public class GameInput{
         
         // Fullscreen
         if(Key.F11.down())
-            Jpize.window().toggleFullscreen();
+            Jpize.window.setFullscreen(Jpize.window.isFullscreen());
         
         /* Chat **/
         
@@ -82,9 +81,9 @@ public class GameInput{
             
             if(Key.LCTRL.pressed()){
                 if(Key.C.down())
-                    Jpize.input().setClipboardString(chat.getEnteringText());
+                    Jpize.input.setClipboardString(chat.getEnteringText());
                 if(Key.V.down())
-                    chat.getTextProcessor().setLine(Jpize.input().getClipboardString());
+                    chat.getInput().insert(Jpize.input.getClipboardString());
             }
             
             if(Key.ESCAPE.down())
@@ -170,9 +169,9 @@ public class GameInput{
 
         // Polygon Mode
         if(Key.F9.down())
-            Gl.polygonMode(GlFace.FRONT_AND_BACK, GlPolygonMode.LINE);
+            GL.polygonMode(GLFace.FRONT_AND_BACK, GLPolygonMode.LINE);
         if(Key.F8.down())
-            Gl.polygonMode(GlFace.FRONT_AND_BACK, GlPolygonMode.FILL);
+            GL.polygonMode(GLFace.FRONT_AND_BACK, GLPolygonMode.FILL);
 
         // Exit
         if(Key.ESCAPE.down())
@@ -186,12 +185,13 @@ public class GameInput{
                 final Collection<Entity> entities = minecraft.getLevel().getEntities();
 
                 // Check intersect with player & entity
-                for(Entity entity: entities)
+                for(Entity entity: entities){
                     if(entity.getAABB().intersect(blockRayCast.getRay())){
                         minecraft.getConnection().sendPacket(new C2SPacketHitEntity(entity.getUUID()));
                         System.out.println("You hit entity" + entity.getUUID());
                         return;
                     }
+                }
 
                 final Vec3i blockPos = blockRayCast.getSelectedBlockPosition();
                 level.setBlock(blockPos.x, blockPos.y, blockPos.z, ClientBlocks.AIR);
@@ -207,12 +207,11 @@ public class GameInput{
             }else if(MouseBtn.RIGHT.down() || Key.J.pressed()){
                 final Item item = player.getInventory().getSelectedItemStack().getItem();
                 if(item instanceof BlockItem blockItem)
-                    placeBlock(selectedBlock); // blockItem.getBlock()
+                    placeBlock(ClientBlocks.COBBLESTONE); // blockItem.getBlock()
             }else if(MouseBtn.MIDDLE.down()){
                 final Vec3i blockPos = blockRayCast.getSelectedBlockPosition();
 
                 final BlockProps blockProps = level.getBlockProps(blockPos.x, blockPos.y, blockPos.z);
-                selectedBlock = blockProps.getBlock();
                 final Item item = Items.COBBLESTONE; // Registry.block_item.get(blockProps.getBlock())
 
                 if(item != null){

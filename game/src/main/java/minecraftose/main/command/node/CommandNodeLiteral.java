@@ -1,8 +1,8 @@
 package minecraftose.main.command.node;
 
 import minecraftose.main.command.Command;
-import minecraftose.main.command.source.CommandServerPlayerSource;
 import minecraftose.main.command.source.CommandSource;
+import minecraftose.main.command.source.CommandServerPlayerSource;
 
 import java.util.Collection;
 import java.util.HashMap;

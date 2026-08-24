@@ -1,10 +1,9 @@
 package minecraftose.client.entity;
 
-import jpize.app.Jpize;
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.time.Stopwatch;
+import generaloss.spatialmath.Mathc;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.chronokit.Stopwatch;
 import minecraftose.client.Minecraft;
 import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
@@ -18,7 +17,7 @@ import minecraftose.main.inventory.PlayerInventory;
 import minecraftose.main.item.ItemStack;
 import minecraftose.main.item.Items;
 
-public class LocalPlayer extends AbstractClientPlayer {
+public class LocalPlayer extends AbstractClientPlayer{
 
     protected final PlayerInput input;
     protected float jumpDownY, lastVelocityY, fallHeight;
@@ -64,10 +63,10 @@ public class LocalPlayer extends AbstractClientPlayer {
                 
                 // Jump-boost
                 if(isSprinting()){
-                    final float yaw = rotation.yaw * Maths.TO_RAD;
+                    final float yaw = rotation.yaw;
                     final float jumpBoost = 0.2F;
-                    velocity.x += jumpBoost * Mathc.cos(yaw);
-                    velocity.z += jumpBoost * Mathc.sin(yaw);
+                    velocity.x += jumpBoost * Maths.cosDeg(yaw);
+                    velocity.z += jumpBoost * Maths.sinDeg(yaw);
                 }
             }
         }
@@ -96,7 +95,7 @@ public class LocalPlayer extends AbstractClientPlayer {
             );
             velocity.add(push);
             minecraft.getCamera().push(push);
-            Jpize.syncExecutor().exec(() -> minecraft.getSoundPlayer().play(SoundGroup.EXPLODE.random(), 1, 1, position.x, position.y, position.z) );
+            Minecraft.syncExecutor.exec(() -> minecraft.getSoundPlayer().play(SoundGroup.EXPLODE.random(), 1, 1, position.x, position.y, position.z) );
         }
 
         // Gravity

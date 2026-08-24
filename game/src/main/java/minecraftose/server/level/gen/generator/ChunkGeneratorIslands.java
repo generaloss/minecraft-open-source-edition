@@ -1,7 +1,7 @@
 package minecraftose.server.level.gen.generator;
 
-import jpize.util.math.FastNoise;
-import jpize.util.math.Maths;
+import generaloss.spatialmath.FastNoise;
+import generaloss.spatialmath.Maths;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.chunk.ChunkBase;
 import minecraftose.main.chunk.storage.HeightmapType;

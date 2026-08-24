@@ -1,13 +1,13 @@
 package minecraftose.client.renderer.level;
 
-import jpize.util.Disposable;
+import generaloss.resourceflow.Disposable;
+import minecraftose.main.entity.Entity;
 import minecraftose.client.control.camera.PlayerCamera;
 import minecraftose.client.entity.RemotePlayer;
 import minecraftose.client.entity.model.PlayerModel;
 import minecraftose.client.level.LevelC;
-import minecraftose.main.entity.Entity;
 
-public class EntityRenderer implements Disposable {
+public class EntityRenderer implements Disposable{
     
     final LevelRenderer levelRenderer;
     

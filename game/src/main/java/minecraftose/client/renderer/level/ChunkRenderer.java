@@ -1,22 +1,22 @@
 package minecraftose.client.renderer.level;
 
-import jpize.gl.Gl;
-import jpize.gl.glenum.GlTarget;
-import jpize.gl.shader.Shader;
-import jpize.gl.texture.Texture2D;
-import jpize.util.Disposable;
+import jpize.opengl.gl.GL;
+import jpize.opengl.glenum.GLTarget;
+import jpize.opengl.shader.Shader;
+import jpize.opengl.texture.Texture2D;
 import jpize.util.color.Color;
-import jpize.util.res.Resource;
+import generaloss.resourceflow.resource.Resource;
 import minecraftose.client.chunk.ChunkC;
 import minecraftose.client.control.camera.PlayerCamera;
 import minecraftose.client.level.LevelC;
 import minecraftose.client.options.Options;
 import minecraftose.main.chunk.ChunkBase;
 import minecraftose.main.time.GameTime;
+import generaloss.resourceflow.Disposable;
 
 import java.util.Collection;
 
-public class ChunkRenderer implements Disposable {
+public class ChunkRenderer implements Disposable{
     
     private final LevelRenderer levelRenderer;
     private final Shader shader, packedShader;
@@ -24,7 +24,7 @@ public class ChunkRenderer implements Disposable {
     
     public ChunkRenderer(LevelRenderer levelRenderer){
         this.levelRenderer = levelRenderer;
-
+        
         this.shader = new Shader(
                 Resource.internal("/shader/level/chunk/custom-blocks.vert"),
                 Resource.internal("/shader/level/chunk/custom-blocks.frag")
@@ -34,15 +34,15 @@ public class ChunkRenderer implements Disposable {
                 Resource.internal("/shader/level/chunk/packed-voxel.frag")
         );
 
-        Gl.polygonOffset(1, 1); // For BlockSelector line rendering
+        GL.polygonOffset(1, 1); // For BlockSelector line rendering
     }
     
     
     public void render(PlayerCamera camera){
         setupShaders(camera);
-        Gl.enable(GlTarget.POLYGON_OFFSET_FILL);
+        GL.enable(GLTarget.POLYGON_OFFSET_FILL);
         renderMeshes(camera);
-        Gl.disable(GlTarget.POLYGON_OFFSET_FILL);
+        GL.disable(GLTarget.POLYGON_OFFSET_FILL);
     }
     
     
@@ -69,7 +69,7 @@ public class ChunkRenderer implements Disposable {
             chunk.updateTranslationMatrix(camera);
 
         // Render custom blocks
-        Gl.disable(GlTarget.CULL_FACE);
+        GL.disable(GLTarget.CULL_FACE);
         shader.bind();
         for(ChunkC chunk: chunks){
             shader.uniform("u_model", chunk.getTranslationMatrix());
@@ -82,7 +82,7 @@ public class ChunkRenderer implements Disposable {
                 shader.bind();
             }
         }
-        Gl.enable(GlTarget.CULL_FACE);
+        GL.enable(GLTarget.CULL_FACE);
 
         // Render solid blocks
         for(ChunkC chunk: chunks){
@@ -98,7 +98,7 @@ public class ChunkRenderer implements Disposable {
         }
 
         // Render translucent blocks
-        //Gl.disable(GlTarget.CULL_FACE);
+        //GL.disable(GLTarget.CULL_FACE);
         for(ChunkC chunk: chunks){
             shader.uniform("u_model", chunk.getTranslationMatrix());
             chunk.getMeshStack().getTranslucent().render();
@@ -110,7 +110,7 @@ public class ChunkRenderer implements Disposable {
                 shader.bind();
             }
         }
-        //Gl.enable(GlTarget.CULL_FACE);
+        //GL.enable(GLTarget.CULL_FACE);
     }
     
     private void setupShaders(PlayerCamera camera){

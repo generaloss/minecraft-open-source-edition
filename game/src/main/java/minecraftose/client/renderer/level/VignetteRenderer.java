@@ -1,16 +1,16 @@
 package minecraftose.client.renderer.level;
 
-import jpize.app.Jpize;
-import jpize.gl.texture.Texture2D;
-import jpize.util.Disposable;
-import jpize.util.math.vector.Vec3f;
+import jpize.context.Jpize;
+import jpize.opengl.texture.Texture2D;
 import jpize.util.mesh.TextureBatch;
+import generaloss.resourceflow.Disposable;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.Minecraft;
 import minecraftose.client.level.LevelC;
 
 import static minecraftose.main.chunk.ChunkUtils.MAX_LIGHT_LEVEL;
 
-public class VignetteRenderer implements Disposable {
+public class VignetteRenderer implements Disposable{
     
     final LevelRenderer levelRenderer;
     private final Texture2D vignetteTexture;

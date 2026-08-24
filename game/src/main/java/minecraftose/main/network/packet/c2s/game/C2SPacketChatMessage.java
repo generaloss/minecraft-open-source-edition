@@ -1,17 +1,15 @@
 package minecraftose.main.network.packet.c2s.game;
 
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.server.network.ServerPlayerGameConnection;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
 
-public class C2SPacketChatMessage extends NetPacket<ServerPlayerGameConnection>{
-    
-        
-    public C2SPacketChatMessage(){}
-    
+public class C2SPacketChatMessage extends VisitorNetPacket<ServerPlayerGameConnection> {
+
+    public C2SPacketChatMessage(){ }
     
     public String message;
     
@@ -22,12 +20,12 @@ public class C2SPacketChatMessage extends NetPacket<ServerPlayerGameConnection>{
     
     
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeUTF(message);
     }
     
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         message = stream.readUTF();
     }
     

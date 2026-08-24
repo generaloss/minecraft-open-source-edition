@@ -1,19 +1,18 @@
 package minecraftose.test;
 
-import jpize.app.Jpize;
-import jpize.app.JpizeApplication;
-import jpize.gl.Gl;
-import jpize.glfw.input.Key;
-import jpize.glfw.input.MouseBtn;
-import jpize.util.math.vector.Vec2f;
+import jpize.context.Jpize;
+import jpize.context.JpizeApplication;
+import jpize.context.input.MouseBtn;
+import jpize.opengl.gl.GL;
 import jpize.util.mesh.TextureBatch;
-import jpize.util.time.TickGenerator;
-import jpize.util.time.Tickable;
+import jpize.context.input.Key;
+import generaloss.spatialmath.vector.Vec2f;
+import generaloss.chronokit.TickGenerator;
 import minecraftose.client.time.ClientGameTime;
 import minecraftose.client.time.var.TickFloat;
 import minecraftose.main.time.GameTime;
 
-public class LerpTest extends JpizeApplication implements Tickable {
+public class LerpTest extends JpizeApplication implements Runnable {
 
     public static final int SIZE = 70;
 
@@ -26,13 +25,12 @@ public class LerpTest extends JpizeApplication implements Tickable {
     TickFloat y = new TickFloat();
     Vec2f velocity = new Vec2f();
 
-    @Override
     public void init(){
         tickGen.startAsync(this);
     }
 
     @Override
-    public void tick(){
+    public void run(){
         time.tick();
 
         velocity.mul(0.95);
@@ -42,10 +40,10 @@ public class LerpTest extends JpizeApplication implements Tickable {
         if(Key.A.pressed()) velocity.x -= speed;
         if(Key.S.pressed()) velocity.y -= speed;
         if(Key.D.pressed()) velocity.x += speed;
-        if(MouseBtn.LEFT.pressed()){
+        if(MouseBtn.pressedAny(MouseBtn.values())){
             velocity.add(
-                (Jpize.getX() - x.value()) / 10,
-                (Jpize.getY() - y.value()) / 10
+                    (Jpize.getX() - x.value()) / 10,
+                    (Jpize.getY() - y.value()) / 10
             );
         }
 
@@ -71,33 +69,21 @@ public class LerpTest extends JpizeApplication implements Tickable {
         }
     }
 
-    @Override
     public void render(){
-        Gl.clearColorBuffer();
+        GL.clearColorBuffer();
         batch.setup();
 
         float t = time.getTickLerpFactor();
-        batch.drawRect(x.value(), y.value(), SIZE, SIZE, 0.4, 0, 0, 1);
-        batch.drawRect(x.getLerp(t), y.getLerp(t), SIZE, SIZE, 0, 1, 0, 0.75);
+        batch.drawRect(x.value(), y.value(), SIZE, SIZE,  0.4, 0, 0, 1);
+        batch.drawRect(x.getLerp(t), y.getLerp(t), SIZE, SIZE,  0, 1, 0, 0.75);
 
         batch.render();
     }
 
-    @Override
     public void update(){
         if(Key.ESCAPE.down())
             Jpize.exit();
-    }
-
-    @Override
-    public void dispose() {
-        tickGen.stop();
-    }
-
-
-    public static void main(String[] args) {
-        Jpize.create(1280, 720, "Test").build().setApp(new LerpTest());
-        Jpize.run();
+        System.out.println(Jpize.getX());
     }
 
 }

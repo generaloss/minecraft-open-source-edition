@@ -1,12 +1,12 @@
 package jpize.tests.mcose.launcher;
 
-
-import jpize.util.res.FileResource;
-import jpize.util.res.Resource;
+import generaloss.resourceflow.resource.FileResource;
+import generaloss.resourceflow.resource.Resource;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,9 +62,13 @@ public class McOseClient{
     public void downloadJar(){
         final FileResource jarFile = Resource.file(gameDir + "/" + jarName);
         if(!jarFile.exists()){
-            System.out.println("Downloading '" + jarName + "'...");
-            jarFile.writeBytes(Resource.url(jarUrl).readBytes());
-            System.out.println("Done.");
+            try {
+                System.out.println("Downloading '" + jarName + "'...");
+                jarFile.writeBytes(Resource.url(jarUrl).readBytes());
+                System.out.println("Done.");
+            } catch(MalformedURLException e) {
+                throw new RuntimeException("Cannot download ", e);
+            }
         }
     }
 

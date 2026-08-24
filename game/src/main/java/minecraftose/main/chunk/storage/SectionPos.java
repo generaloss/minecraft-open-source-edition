@@ -1,7 +1,6 @@
 package minecraftose.main.chunk.storage;
 
-
-import jpize.util.math.vector.Vec3i;
+import generaloss.spatialmath.vector.Vec3i;
 
 public class SectionPos extends Vec3i {
 

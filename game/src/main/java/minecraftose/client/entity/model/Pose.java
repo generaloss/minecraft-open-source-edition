@@ -1,9 +1,8 @@
 package minecraftose.client.entity.model;
 
-import jpize.util.math.EulerAngles;
-import jpize.util.math.Quaternion;
-import jpize.util.math.matrix.Matrix4f;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.EulerAngles;
+import generaloss.spatialmath.matrix.Matrix4f;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.control.camera.PlayerCamera;
 
 public class Pose{
@@ -27,13 +26,12 @@ public class Pose{
     public void updateMatrices(PlayerCamera camera, Pose initial){
         translateMatrix.setTranslate(position);
         scaleMatrix.setScale(scale);
-        final Matrix4f rotationMatrix = new Matrix4f().setQuaternion(new Quaternion().setRotation(rotation));
         
         poseModelMatrix
             .identity()
         
             .mul(initial.poseModelMatrix)
-            .mul(translateMatrix).mul(scaleMatrix).mul(rotationMatrix)
+            .mul(translateMatrix).mul(scaleMatrix).mul(new Matrix4f().setRotation(rotation))
         ;
         
         modelMatrix
@@ -44,14 +42,13 @@ public class Pose{
     public void updateMatrices(PlayerCamera camera, Pose initial, Pose parent){
         translateMatrix.setTranslate(position);
         scaleMatrix.setScale(scale);
-        final Matrix4f rotationMatrix = new Matrix4f().setQuaternion(new Quaternion().setRotation(rotation));
         
         poseModelMatrix
             .identity()
             
             .mul(parent.poseModelMatrix)
             .mul(initial.poseModelMatrix)
-            .mul(translateMatrix).mul(scaleMatrix).mul(rotationMatrix)
+            .mul(translateMatrix).mul(scaleMatrix).mul(new Matrix4f().setRotation(rotation))
         ;
         
         modelMatrix

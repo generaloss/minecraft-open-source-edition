@@ -1,6 +1,6 @@
 package minecraftose.main.entity;
 
-import jpize.util.math.axisaligned.AABox;
+import generaloss.spatialmath.axisaligned.AABox;
 import minecraftose.main.level.Level;
 
 import java.util.HashMap;

@@ -1,11 +1,11 @@
 package mymod;
 
-import jpize.app.Jpize;
-import jpize.gl.texture.Texture2D;
-import jpize.glfw.input.Key;
-import jpize.util.font.Font;
+import jpize.context.Jpize;
+import jpize.opengl.texture.Texture2D;
 import jpize.util.mesh.TextureBatch;
-import jpize.util.res.Resource;
+import jpize.context.input.Key;
+import jpize.util.font.Font;
+import generaloss.resourceflow.resource.Resource;
 import minecraftose.client.Minecraft;
 import minecraftose.main.modification.api.ClientModInitializer;
 import minecraftose.main.text.Component;
@@ -27,7 +27,7 @@ public class ModClient implements ClientModInitializer{
         
         batch = new TextureBatch();
         //font = FontLoader.getDefault();
-        texture = new Texture2D(Resource.internal(ModClient.class, "/icon.png"));
+        texture = new Texture2D(Resource.internal(ModClient.class, "icon.png"));
     }
     
     

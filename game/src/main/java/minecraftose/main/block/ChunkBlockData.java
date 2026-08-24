@@ -1,7 +1,7 @@
 package minecraftose.main.block;
 
-import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlock;
+import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
 
 public class ChunkBlockData{

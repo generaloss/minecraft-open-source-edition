@@ -1,15 +1,15 @@
 package minecraftose.client.renderer.level;
 
-import jpize.gl.shader.Shader;
-import jpize.util.Disposable;
-import jpize.util.math.matrix.Matrix4f;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.res.Resource;
+import generaloss.resourceflow.Disposable;
+import generaloss.spatialmath.matrix.Matrix4f;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.resourceflow.resource.Resource;
+import jpize.opengl.shader.Shader;
 import minecraftose.client.block.shape.BlockCursor;
-import minecraftose.client.control.BlockRayCast;
 import minecraftose.client.control.camera.PlayerCamera;
+import minecraftose.client.control.BlockRayCast;
 
-public class BlockSelectorRenderer implements Disposable {
+public class BlockSelectorRenderer implements Disposable{
     
     private final LevelRenderer levelRenderer;
     private final Shader shader;
@@ -30,9 +30,8 @@ public class BlockSelectorRenderer implements Disposable {
             return;
         
         shader.bind();
-        shader.uniform("u_projection", camera.getProjection());
-        shader.uniform("u_view", camera.getView());
-        
+        shader.uniform("u_combined", camera.getCombined());
+
         translationMatrix.setTranslate(new Vec3f(rayCast.getSelectedBlockPosition()).sub(camera.getX(), 0, camera.getZ()));
         shader.uniform("u_model", translationMatrix);
         

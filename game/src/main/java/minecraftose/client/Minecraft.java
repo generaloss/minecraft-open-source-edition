@@ -1,18 +1,18 @@
 package minecraftose.client;
 
-import jpize.app.Jpize;
-import jpize.app.JpizeApplication;
-import jpize.audio.AlDevices;
+import generaloss.chronokit.Sync;
+import generaloss.chronokit.TickGenerator;
+import generaloss.chronokit.TimeUtils;
+import generaloss.resourceflow.resource.Resource;
+import generaloss.spatialmath.Mathc;
 import jpize.audio.al.listener.AlListener;
-import jpize.gl.Gl;
-import jpize.gl.texture.Texture2D;
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.res.Resource;
-import jpize.util.time.Sync;
-import jpize.util.time.TickGenerator;
-import jpize.util.time.TimeUtils;
+import jpize.context.Jpize;
+import jpize.context.JpizeApplication;
+import jpize.context.SyncExecutor;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.vector.Vec3f;
+import jpize.opengl.gl.GL;
+import jpize.opengl.texture.Texture2D;
 import minecraftose.Main;
 import minecraftose.client.audio.MusicGroup;
 import minecraftose.client.audio.MusicPlayer;
@@ -42,10 +42,10 @@ import minecraftose.main.block.ChunkBlockData;
 import minecraftose.main.modification.loader.ModEntryPointType;
 import minecraftose.main.modification.loader.ModLoader;
 import minecraftose.main.network.PlayerProfile;
-import minecraftose.main.network.packet.c2s.game.move.C2SPacketMove;
 import minecraftose.main.network.packet.c2s.game.move.C2SPacketMoveAndRot;
 import minecraftose.main.network.packet.c2s.game.move.C2SPacketRot;
 import minecraftose.main.network.packet.c2s.login.C2SPacketLogin;
+import minecraftose.main.network.packet.c2s.game.move.C2SPacketMove;
 import minecraftose.main.time.GameTime;
 import minecraftose.server.IntegratedServer;
 
@@ -54,35 +54,38 @@ public class Minecraft extends JpizeApplication implements Tickable{
     public static final Minecraft INSTANCE = new Minecraft();
 
     private final PlayerProfile profile = Main.profile;
-    private final Options options;
-    private final Version version;
-    private final GameInput gameInput;
-    private final GameResources gameResources;
-    private final GameRenderer renderer;
+    private Options options;
+    private Version version;
+    private GameInput gameInput;
+    private GameResources gameResources;
+    private GameRenderer renderer;
     private IntegratedServer integratedServer;
-    private final SoundPlayer soundPlayer;
-    private final MusicPlayer musicPlayer;
-    private final ModLoader modLoader;
-    private final TickGenerator ticks;
+    private SoundPlayer soundPlayer;
+    private MusicPlayer musicPlayer;
+    private ModLoader modLoader;
+    private TickGenerator ticks;
 
-    private final Sync fpsSync;
+    public static SyncExecutor syncExecutor;
+    private Sync fpsSync;
 
-    private final ClientConnection connection;
-    private final ClientCommandDispatcher commandDispatcher;
-    private final Chat chat;
+    private ClientConnection connection;
+    private ClientCommandDispatcher commandDispatcher;
+    private Chat chat;
 
-    private final BlockRayCast blockRayCast;
-    private final ClientGameTime time;
-    private final LocalPlayer player;
-    private final PlayerCamera camera;
+    private BlockRayCast blockRayCast;
+    private ClientGameTime time;
+    private LocalPlayer player;
+    private PlayerCamera camera;
 
 
     private LevelC level;
-    
-    public Minecraft(){
-        AlDevices.openDevice();
+
+    @Override
+    public void init(){
         // Create Instances //
         Thread.currentThread().setName("Render-Thread");
+
+        syncExecutor = Jpize.syncExecutor();
 
         // Resources //
         this.gameResources = new GameResources();
@@ -96,7 +99,7 @@ public class Minecraft extends JpizeApplication implements Tickable{
 
         this.options = new Options(this, SharedConstants.GAME_DIR_PATH);
         this.fpsSync = new Sync(0);
-        this.fpsSync.enable(false);
+        this.fpsSync.disable();
 
         this.gameInput = new GameInput(this);
         this.renderer = new GameRenderer(this);
@@ -110,9 +113,10 @@ public class Minecraft extends JpizeApplication implements Tickable{
         this.options.load();
 
         this.ticks = new TickGenerator(GameTime.TICKS_PER_SECOND);
+        this.ticks.startAsync(this::tick);
 
         this.connection = new ClientConnection(this);
-        
+
         this.blockRayCast = new BlockRayCast(this, 16);
         this.chat = new Chat(this);
         this.time = new ClientGameTime();
@@ -143,17 +147,11 @@ public class Minecraft extends JpizeApplication implements Tickable{
         ClientBlocks.loadBlocks(this);
 
         // Connect to server //
-        TimeUtils.delaySeconds(1F);
+        TimeUtils.delayMillis(1000);
         this.connect(address[0], Integer.parseInt(address[1]));
 
         // Music
         this.musicPlayer.setGroup(MusicGroup.GAME);
-    }
-
-
-    @Override
-    public void init() {
-        this.ticks.startAsync(this::tick);
     }
 
     
@@ -182,7 +180,7 @@ public class Minecraft extends JpizeApplication implements Tickable{
 
         // Update audio listener
         if(player.isRotationChanged())
-            AlListener.setOrientation(player.getRotation().getDirection().rotateY(180));
+            AlListener.setOrientation(player.getRotation().getDirection(new Vec3f()).rotateY(180));
         if(player.isPositionChanged()){
             AlListener.setPosition(player.getLerpPosition().copy().add(0, player.getEyeHeight(), 0));
             AlListener.setVelocity(player.getVelocity());
@@ -201,7 +199,6 @@ public class Minecraft extends JpizeApplication implements Tickable{
         player.updateInterpolation();
         blockRayCast.update();
         camera.update();
-        musicPlayer.update();
     }
     
     public void createClientLevel(String worldName){
@@ -222,7 +219,7 @@ public class Minecraft extends JpizeApplication implements Tickable{
         fpsSync.sync();
         gameInput.update();
 
-        Gl.clearColorDepthBuffers();
+        GL.clearColorDepthBuffers();
         renderer.render();
 
         modLoader.invokeMethod(ModEntryPointType.CLIENT, "render");
@@ -251,8 +248,7 @@ public class Minecraft extends JpizeApplication implements Tickable{
         renderer.dispose();
         gameResources.dispose();
         soundPlayer.dispose();
-
-        AlDevices.dispose();
+        musicPlayer.dispose();
     }
     
     public void disconnect(){

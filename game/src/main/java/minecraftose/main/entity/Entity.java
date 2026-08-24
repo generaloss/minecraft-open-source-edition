@@ -1,11 +1,11 @@
 package minecraftose.main.entity;
 
-import jpize.util.math.EulerAngles;
-import jpize.util.math.Maths;
-import jpize.util.math.axisaligned.AABox;
-import jpize.util.math.axisaligned.AABoxBody;
-import jpize.util.math.axisaligned.AABoxCollider;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.EulerAngles;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.axisaligned.AABox;
+import generaloss.spatialmath.axisaligned.AABoxBody;
+import generaloss.spatialmath.axisaligned.AABoxCollider;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.client.block.shape.BlockCollide;

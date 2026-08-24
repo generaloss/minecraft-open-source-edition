@@ -1,11 +1,11 @@
 package minecraftose.server.command.vanilla;
 
+import minecraftose.main.text.Component;
 import minecraftose.main.command.CommandContext;
+import minecraftose.server.command.ServerCommandDispatcher;
 import minecraftose.main.command.builder.Commands;
 import minecraftose.main.command.node.CommandNodeLiteral;
 import minecraftose.main.command.source.CommandSource;
-import minecraftose.main.text.Component;
-import minecraftose.server.command.ServerCommandDispatcher;
 
 public class SCommandHelp{
     

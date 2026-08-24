@@ -1,7 +1,7 @@
 package minecraftose.server.level;
 
-import jpize.util.math.vector.Vec2f;
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec2f;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.block.ClientBlock;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.audio.Sound;
@@ -16,7 +16,7 @@ import minecraftose.server.level.light.LevelBlockLight;
 import minecraftose.server.level.light.LevelSkyLight;
 import minecraftose.server.player.ServerPlayer;
 
-import static minecraftose.main.chunk.ChunkUtils.MAX_LIGHT_LEVEL;
+import static minecraftose.main.chunk.ChunkUtils.*;
 
 public class LevelS extends Level{
 

@@ -1,6 +1,6 @@
 package minecraftose.server.level.light;
 
-import jpize.util.math.vector.Vec3i;
+import generaloss.spatialmath.vector.Vec3i;
 import minecraftose.client.block.BlockProps;
 import minecraftose.main.Dir;
 import minecraftose.main.chunk.ChunkBase;

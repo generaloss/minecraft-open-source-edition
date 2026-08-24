@@ -1,13 +1,13 @@
 package minecraftose.client.entity;
 
-import jpize.app.Jpize;
-import jpize.util.math.EulerAngles;
-import jpize.util.math.vector.Vec3f;
+import jpize.context.Jpize;
+import generaloss.spatialmath.EulerAngles;
+import generaloss.spatialmath.vector.Vec3f;
 import minecraftose.client.Minecraft;
 import minecraftose.client.entity.model.PlayerModel;
-import minecraftose.client.level.LevelC;
 import minecraftose.client.time.var.TickFloat;
 import minecraftose.main.entity.Player;
+import minecraftose.client.level.LevelC;
 
 public class AbstractClientPlayer extends Player{
 

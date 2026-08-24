@@ -1,9 +1,9 @@
 package minecraftose.server.level.gen.generator;
 
-import jpize.util.math.ExtRandom;
-import jpize.util.math.FastNoise;
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
+import generaloss.spatialmath.ExtRandom;
+import generaloss.spatialmath.FastNoise;
+import generaloss.spatialmath.Mathc;
+import generaloss.spatialmath.Maths;
 import minecraftose.client.block.ClientBlock;
 import minecraftose.client.block.ClientBlocks;
 import minecraftose.main.biome.Biome;
@@ -11,8 +11,8 @@ import minecraftose.main.biome.chunk.BiomeMap;
 import minecraftose.main.chunk.ChunkBase;
 import minecraftose.main.chunk.storage.Heightmap;
 import minecraftose.main.chunk.storage.HeightmapType;
-import minecraftose.server.level.LevelS;
 import minecraftose.server.level.chunk.ChunkS;
+import minecraftose.server.level.LevelS;
 import minecraftose.server.level.gen.ChunkGenerator;
 import minecraftose.server.level.gen.decoration.*;
 import minecraftose.server.level.gen.decoration.old.*;
@@ -234,7 +234,7 @@ public class ChunkGeneratorDefault extends ChunkGenerator{
                 // SET SURFACE BLOCKS
                 chunk.setBlockFast(lx, height, lz, topBlock);
 
-                final int subsurfaceLayerHeight = random.nextInt(2, 5);
+                final int subsurfaceLayerHeight = random.nextInt(5 - 2) + 2;
                 for(int y = height - subsurfaceLayerHeight; y < height; y++)
                     chunk.setBlockFast(lx, y, lz, fillerBlock);
 

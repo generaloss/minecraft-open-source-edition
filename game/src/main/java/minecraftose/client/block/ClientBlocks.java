@@ -3,8 +3,8 @@ package minecraftose.client.block;
 import minecraftose.client.Minecraft;
 import minecraftose.client.block.air.Air;
 import minecraftose.client.block.air.VoidAir;
-import minecraftose.client.block.vanilla.*;
 import minecraftose.client.resources.GameResources;
+import minecraftose.client.block.vanilla.*;
 
 import java.util.HashMap;
 import java.util.Map;

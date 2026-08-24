@@ -1,6 +1,6 @@
 package minecraftose.server.level.gen.decoration;
 
-import jpize.util.math.ExtRandom;
+import generaloss.spatialmath.ExtRandom;
 import minecraftose.main.level.structure.Structure;
 import minecraftose.server.level.LevelS;
 

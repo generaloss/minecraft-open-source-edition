@@ -1,11 +1,11 @@
 package minecraftose.client.control;
 
-import jpize.util.math.Mathc;
-import jpize.util.math.Maths;
-import jpize.util.math.geometry.Ray3f;
-import jpize.util.math.matrix.Matrix4f;
-import jpize.util.math.vector.Vec3f;
-import jpize.util.math.vector.Vec3i;
+import generaloss.spatialmath.Mathc;
+import generaloss.spatialmath.Maths;
+import generaloss.spatialmath.geometry.Ray3f;
+import generaloss.spatialmath.matrix.Matrix4f;
+import generaloss.spatialmath.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3i;
 import minecraftose.client.Minecraft;
 import minecraftose.client.block.BlockProps;
 import minecraftose.client.block.ClientBlocks;
@@ -61,7 +61,7 @@ public class BlockRayCast{
         
         // Update ray
         final LocalPlayer player = minecraft.getPlayer();
-        ray.direction().set(player.getRotation().getDirection());
+        ray.direction().set(player.getRotation().getDirection(new Vec3f()));
         ray.origin().set(player.getLerpPosition().copy().add(0, player.getEyeHeight(), 0));
         
         // Get pos, dir, len
@@ -130,7 +130,7 @@ public class BlockRayCast{
                 }else{
                     final BlockCursor shape = block.getCursor();
                     blockMatrix.setTranslate(selectedBlock);
-                    if(ray.intersectQuadMesh(blockMatrix, shape.getVertices(), shape.getQuadIndices())){
+                    if(ray.intersectMesh(blockMatrix, shape.getVertices(), shape.getQuadIndices())){
                         selectedFace = Dir.fromNormal(faceNormal.x, faceNormal.y, faceNormal.z);
                         selectedBlockProps = block;
                         imaginarySelectedBlock.set(selectedBlock).add(selectedFace.getNormal());

@@ -1,7 +1,6 @@
 package minecraftose.server.player;
 
-
-import jpize.util.math.vector.Vec3f;
+import generaloss.spatialmath.vector.Vec3f;
 
 public class OfflinePlayer{
     

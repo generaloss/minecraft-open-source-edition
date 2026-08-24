@@ -1,16 +1,16 @@
 package minecraftose.main.network.packet.s2c.game;
 
-import jpize.util.io.ExtDataInputStream;
-import jpize.util.io.ExtDataOutputStream;
-import jpize.util.net.packet.NetPacket;
+import generaloss.networkforge.packet.VisitorNetPacket;
 import minecraftose.client.network.ClientPacketHandler;
+import generaloss.resourceflow.stream.BinaryInputStream;
+import generaloss.resourceflow.stream.BinaryOutputStream;
 
 import java.io.IOException;
 
-public class S2CPacketBlockUpdate extends NetPacket<ClientPacketHandler> {
+public class S2CPacketBlockUpdate extends VisitorNetPacket<ClientPacketHandler> {
     
-        
-    public S2CPacketBlockUpdate(){}
+       
+    public S2CPacketBlockUpdate(){ }
     
     public int x, y, z;
     public short blockData;
@@ -26,7 +26,7 @@ public class S2CPacketBlockUpdate extends NetPacket<ClientPacketHandler> {
     
     
     @Override
-    public void write(ExtDataOutputStream stream) throws IOException{
+    public void write(BinaryOutputStream stream) throws IOException{
         stream.writeInt(x);
         stream.writeInt(y);
         stream.writeInt(z);
@@ -34,7 +34,7 @@ public class S2CPacketBlockUpdate extends NetPacket<ClientPacketHandler> {
     }
     
     @Override
-    public void read(ExtDataInputStream stream) throws IOException{
+    public void read(BinaryInputStream stream) throws IOException{
         x = stream.readInt();
         y = stream.readInt();
         z = stream.readInt();
